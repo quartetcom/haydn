@@ -1,54 +1,28 @@
-# PHP.Skeleton
+# Haydn
 
-## A standard PHP project skeleton
+配列に対してかけ算や列演算を宣言的に指定できるライブラリ。次のような事ができる。
 
-This project was created in order to provide project skeleton to start new PHP project.
-Various config files are ready for continuous integration.
+```php
+$fruits = [
+    ['name' => 'Apple',  'price' => 100],
+    ['name' => 'Banana', 'price' =>  80],
+];
 
- * phpunit.xml for [phpunit](http://phpunit.de/manual/current/en/index.html)
- * build.xml for [Apache Ant](http://ant.apache.org/) / [Jenkins](http://jenkins-ci.org/)
- * .travis.yml for [Travis CI](https://travis-ci.org/)
- * .php_cs for [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer)
- * .scrutinizer for [scrutinizer-ci](https://scrutinizer-ci.com/)
- 
-## Requirements
+$drinks = [
+    ['name' => 'Yoghurt', 'price' => 200],
+    ['name' => 'Soda',    'price' => 120],
+    ['name' => 'Spirit',  'price' => 160],
+];
 
- * PHP 5.3+
+$fruitSet = new Set(new ArraySource($fruits), 'fruit');
+$drinkSet = new Set(new ArraySource($drinks), 'drink');
 
-## Getting started
+$fruitDrinkSet = $fruitSet->product($drinkSet);
 
-### Create project
-
-    $ composer create-project php/skeleton {Vendor.Package}
-    $ cd {Vendor.Package}
-    $ phpunit
-
-
-## CI - Using ant
-
-### Install
-
-Linux - [Installing Apache Ant](http://ant.apache.org/manual/install.html)
-
-OSX
-
-    $ port install apache-ant // by mac ports
-    $ brew install ant // by brew
-
-Windows - https://code.google.com/p/winant/
- 
-### Prepare
-
-#### Install QA(Quality Assurance) tools
-    $ ant require
-
-#### Export composer bin path 
-
-    export PATH="$HOME/.composer/vendor/bin:$PATH"
-
-### Run
- 
-    $ ant test    // run test
-    $ ant report  // output API and QA docs
-
-    $ ant         // all (require, test, report)
+// fruit.name: Apple,  fruit.price: 100, drink.name: Yoghurt, drink.price: 230
+// fruit.name: Apple,  fruit.price: 100, drink.name: Soda,    drink.price: 120
+// fruit.name: Apple,  fruit.price: 100, drink.name: Spirit,  drink.price: 160
+// fruit.name: Banana, fruit.price:  80, drink.name: Yoghurt, drink.price: 230
+// fruit.name: Banana, fruit.price:  80, drink.name: Soda,    drink.price: 120
+// fruit.name: Banana, fruit.price:  80, drink.name: Spirit,  drink.price: 160
+```
