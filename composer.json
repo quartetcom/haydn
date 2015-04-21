@@ -1,0 +1,34 @@
+{
+    "name": "quartet/haydn",
+    "description":" ",
+    "keywords":[
+    ],
+    "license": "BSD-3-Clause",
+    "config":{
+        "bin-dir": "bin"
+    },
+    "autoload":{
+        "psr-4":{
+            "Quartet\\Haydn\\": "src/"
+        }
+    },
+    "autoload-dev":{
+        "psr-4":{
+            "Quartet\\Haydn\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.1.x-dev"
+        }
+    },
+    "require": {
+        "php": "~5.5"
+    },
+    "require-dev": {
+        ""
+        "phpunit/phpunit": "~4.6"
+    }
+}
