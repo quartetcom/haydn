@@ -158,4 +158,32 @@ class SetTest extends \PHPUnit_Framework_TestCase
 
         return $a;
     }
+
+    /**
+     * @test
+     * @dataProvider 行生成データ
+     */
+    public function 行生成($data, $expected)
+    {
+        $set = new Set(new ArraySource($data), 'test');
+        $result = [];
+        foreach ($set as $row) {
+            $result[] = $row;
+        }
+
+        $this->assertEquals($result, $expected);
+    }
+
+    public function 行生成データ()
+    {
+        return [
+            '単純配列' => [
+                [1, 2, 3, 4], [['test'=>1], ['test'=>2], ['test'=>3], ['test'=>4]]
+            ],
+            '連想配列' => [
+                [['name'=>'a'], ['name'=>'b'], ['name'=>'c'], ['name'=>'d']],
+                [['test.name'=>'a'], ['test.name'=>'b'], ['test.name'=>'c'], ['test.name'=>'d']]
+            ]
+        ];
+    }
 }

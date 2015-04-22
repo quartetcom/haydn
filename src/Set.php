@@ -96,8 +96,12 @@ class Set implements \IteratorAggregate
     protected function makeRow($array)
     {
         $row = [];
-        foreach ($array as $k => $v) {
-            $row[$this->alias . '.' . $k] = $v;
+        if (is_array($array)) {
+            foreach ($array as $k => $v) {
+                $row[$this->alias . '.' . $k] = $v;
+            }
+        } else {
+            $row[$this->alias] = $array;
         }
 
         return $row;
