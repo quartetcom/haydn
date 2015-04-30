@@ -2,6 +2,8 @@
 namespace Quartet\Haydn;
 
 use Quartet\Common\CsvUtil\Csv;
+use Quartet\Haydn\IO\ColumnMapper\HashKeyColumnMapper;
+use Quartet\Haydn\IO\ColumnMapper\SimpleArrayColumnMapper;
 use Quartet\Haydn\IO\Source\ArraySource;
 use Quartet\Haydn\IO\Source\CsvSource;
 
@@ -18,7 +20,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
             ["お","か", 50,3000],
         ];
 
-        $aSource = new ArraySource($data);
+        $aSource = new ArraySource('array', $data, new SimpleArrayColumnMapper([]));
 
         $set = new Set($aSource, 'array');
 
@@ -42,7 +44,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
      */
     public function CSVソース()
     {
-        $aSource = new CsvSource(new Csv(__DIR__.'/fixtures/google_ad_group_report.csv'));
+        $aSource = new CsvSource('gad_group_report', new Csv(__DIR__.'/fixtures/google_ad_group_report.csv'), 2);
 
         $set = new Set($aSource, 'gad_group_report');
 
@@ -53,18 +55,17 @@ class SetTest extends \PHPUnit_Framework_TestCase
             $result[] = $record;
         }
 
-        $this->assertThat($result[0]['gad_group_report.0'], $this->equalTo('google_adgroup (2013/06/01-2013/06/30)'));
-        $this->assertThat($result[1]['gad_group_report.0'], $this->equalTo('設定'));
-        $this->assertThat($result[1]['gad_group_report.1'], $this->equalTo('広告グループ'));
-        $this->assertThat($result[2]['gad_group_report.0'], $this->equalTo('一時停止'));
-        $this->assertThat($result[1177]['gad_group_report.0'], $this->equalTo('合計'));
-        $this->assertThat($result[1177]['gad_group_report.7'], $this->equalTo('269659'));
+        $this->assertThat($result[0]['gad_group_report.設定'], $this->equalTo('一時停止'));
+        $this->assertThat($result[0]['gad_group_report.広告グループ'], $this->equalTo('モバイル'));
+        $this->assertThat($result[1]['gad_group_report.設定'], $this->equalTo('アクティブ'));
+        $this->assertThat($result[1175]['gad_group_report.設定'], $this->equalTo('合計'));
+        $this->assertThat($result[1175]['gad_group_report.表示回数'], $this->equalTo('269659'));
     }
 
     /**
      * @test
      */
-    public function testSet()
+    public function testProductSet()
     {
         $fruits = [
             ['name' => 'Apple',  'price' => 100],
@@ -77,17 +78,41 @@ class SetTest extends \PHPUnit_Framework_TestCase
             ['name' => 'Spirit',  'price' => 160],
         ];
 
-        $fruitSet = new Set(new ArraySource($fruits), 'fruit');
-        $drinkSet = new Set(new ArraySource($drinks), 'drink');
+        $mapper = new HashKeyColumnMapper();
+        $fruitSet = new Set(new ArraySource('fruit', $fruits, $mapper));
+        $drinkSet = new Set(new ArraySource('drink', $drinks, $mapper));
 
         $fruitDrinkSet = $fruitSet->product($drinkSet);
-        $count = 0;
-        foreach ($fruitDrinkSet as $fruitDrink) {
-            $count++;
-        }
-        $this->assertThat($count, $this->equalTo(6));
+        $result = $fruitDrinkSet->toArray();
 
+        $this->assertThat(count($result), $this->equalTo(6));
+        $this->assertThat($result[0]['fruit.name'], $this->equalTo('Apple'));
+        $this->assertThat($result[0]['drink.name'], $this->equalTo('Yoghurt'));
+        $this->assertThat($result[1]['fruit.price'], $this->equalTo(100));
+        $this->assertThat($result[1]['drink.price'], $this->equalTo(120));
+    }
 
+    /**
+     * @test
+     */
+    public function testSelectSet()
+    {
+        $fruits = [
+            ['name' => 'Apple',  'price' => 100],
+            ['name' => 'Banana', 'price' =>  80],
+        ];
+
+        $drinks = [
+            ['name' => 'Yoghurt', 'price' => 200],
+            ['name' => 'Soda',    'price' => 120],
+            ['name' => 'Spirit',  'price' => 160],
+        ];
+
+        $mapper = new HashKeyColumnMapper();
+        $fruitSet = new Set(new ArraySource('fruit', $fruits, $mapper));
+        $drinkSet = new Set(new ArraySource('drink', $drinks, $mapper));
+
+        $fruitDrinkSet = $fruitSet->product($drinkSet);
         $fruitDrinkMenu = $fruitDrinkSet->select([function($r){
             return [
                 'item' => $r['fruit.name'] . ' ' . $r['drink.name'],
@@ -95,11 +120,12 @@ class SetTest extends \PHPUnit_Framework_TestCase
             ];
         }]);
 
-        $count = 0;
-        foreach ($fruitDrinkMenu as $fruitDrink) {
-            $count++;
-        }
-        $this->assertThat($count, $this->equalTo(6));
+        $result = $fruitDrinkMenu->toArray();
+        $this->assertThat(count($result), $this->equalTo(6));
+        $this->assertThat($result[0]['item'], $this->equalTo('Apple Yoghurt'));
+        $this->assertThat($result[0]['price'], $this->equalTo(300));
+        $this->assertThat($result[4]['item'], $this->equalTo('Banana Soda'));
+        $this->assertThat($result[4]['price'], $this->equalTo(200));
 
         $fruitDrinkMenuWithRev = $fruitDrinkSet->select([function($r){
                 return [
@@ -112,11 +138,12 @@ class SetTest extends \PHPUnit_Framework_TestCase
                 ];}]
         );
 
-        $count = 0;
-        foreach ($fruitDrinkMenuWithRev as $fruitDrink) {
-            $count++;
-        }
-        $this->assertThat($count, $this->equalTo(12));
+        $result = $fruitDrinkMenuWithRev->toArray();
+        $this->assertThat(count($result), $this->equalTo(12));
+        $this->assertThat($result[10]['item'], $this->equalTo('Banana Spirit'));
+        $this->assertThat($result[10]['price'], $this->equalTo(240));
+        $this->assertThat($result[11]['item'], $this->equalTo('Spirit Banana'));
+        $this->assertThat($result[11]['price'], $this->equalTo(240));
     }
 
     /**
@@ -125,8 +152,9 @@ class SetTest extends \PHPUnit_Framework_TestCase
      */
     public function testLarger()
     {
-        $setA = new Set(new ArraySource($this->numarray(1000)), 'a');
-        $setB = new Set(new ArraySource($this->strarray(100)), 'b');
+        $mapper = new SimpleArrayColumnMapper([]);
+        $setA = new Set(new ArraySource('a', $this->numarray(1000), $mapper), 'a');
+        $setB = new Set(new ArraySource('b', $this->strarray(100), $mapper), 'b');
 
         $abSet = $setA->product($setB);
 

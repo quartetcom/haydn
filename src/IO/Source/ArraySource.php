@@ -1,22 +1,25 @@
 <?php
 namespace Quartet\Haydn\IO\Source;
 
-use Quartet\Haydn\IO\SourceInterface;
+use Quartet\Haydn\IO\ColumnMapperInterface;
 
-class ArraySource implements SourceInterface
+class ArraySource extends AbstractSource
 {
-    protected $it;
+    /**
+     * @var array $data
+     */
+    private $data;
 
-    public function __construct($data)
+    public function __construct($name, $data, ColumnMapperInterface $columnMapper)
     {
-        $this->it = new \ArrayIterator($data);
+        $this->data = $data;
+        parent::__construct($name, $columnMapper);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator()
+    protected function iterate()
     {
-        return $this->it;
+        foreach ($this->data as $line) {
+            yield $this->makeRow($line);
+        }
     }
 }

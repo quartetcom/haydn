@@ -24,23 +24,16 @@ class Set implements \IteratorAggregate
     private $source;
 
     /**
-     * @var string
-     */
-    protected $alias;
-
-    /**
      * @var \Generator
      */
     protected $it;
 
     /**
      * @param SourceInterface $source
-     * @param string $as
      */
-    public function __construct(SourceInterface $source = null, $as = '')
+    public function __construct(SourceInterface $source = null)
     {
         $this->source = $source;
-        $this->alias = $as;
         $this->rewind();
     }
 
@@ -57,18 +50,8 @@ class Set implements \IteratorAggregate
      */
     public function rewind()
     {
-        $this->it = $this->rawIterator();
-    }
-
-    /**
-     * @return \Generator
-     */
-    protected function rawIterator()
-    {
-        foreach ($this->source as $k => $r) {
-            $row = $this->makeRow($r);
-            yield $row;
-        }
+        $this->source->rewind();
+        $this->it = $this->source->getIterator();
     }
 
     /**
@@ -90,20 +73,15 @@ class Set implements \IteratorAggregate
     }
 
     /**
-     * @param $array
      * @return array
      */
-    protected function makeRow($array)
+    public function toArray()
     {
-        $row = [];
-        if (is_array($array)) {
-            foreach ($array as $k => $v) {
-                $row[$this->alias . '.' . $k] = $v;
-            }
-        } else {
-            $row[$this->alias] = $array;
+        $buf = [];
+        foreach ($this as $line) {
+            $buf[] = $line;
         }
 
-        return $row;
+        return $buf;
     }
 }
