@@ -4,6 +4,12 @@
     "keywords":[
     ],
     "license": "BSD-3-Clause",
+    "repositories": {
+        "quartet": {
+            "type": "composer",
+            "url": "http://dev.quartetcom.co.jp/composer"
+        }
+    },
     "config":{
         "bin-dir": "bin"
     },
@@ -21,11 +27,12 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.1.x-dev"
+            "dev-master": "0.1.x-dev"
         }
     },
     "require": {
-        "php": "~5.5"
+        "php": "~5.5",
+        "quartet/common": "~1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.6"
