@@ -23,4 +23,10 @@ interface ColumnMapperInterface
      * @return mixed
      */
     public function setMap($map);
+
+    /**
+     * @param SourceInterface $source
+     * @return mixed
+     */
+    public function setSource(SourceInterface $source);
 }

@@ -2,6 +2,7 @@
 namespace Quartet\Haydn\IO\Source;
 
 use Quartet\Haydn\IO\ColumnMapper\HashKeyColumnMapper;
+use Quartet\Haydn\IO\ColumnMapper\NullColumnMapper;
 use Quartet\Haydn\IO\ColumnMapper\SimpleArrayColumnMapper;
 
 class ArraySourceTest extends \PHPUnit_Framework_TestCase
@@ -15,7 +16,7 @@ class ArraySourceTest extends \PHPUnit_Framework_TestCase
             [1,2,3],
             [4,5,6]
         ];
-        $source = new ArraySource('foo', $data, new SimpleArrayColumnMapper([]));
+        $source = new ArraySource('foo', $data, new NullColumnMapper());
         $this->assertThat($source, $this->isInstanceOf(ArraySource::class));
     }
 

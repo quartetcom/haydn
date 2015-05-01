@@ -11,8 +11,11 @@ class SimpleArrayColumnMapper extends AbstractColumnMapper
      *  [1] => 'def',
      *  [2] => 'ghi',
      */
-    public function __construct($names)
+    public function __construct($names, $lazy = false)
     {
+        if ($lazy === false && (!is_array($names) || count($names) < 1)) {
+            throw new \RuntimeException('Column mapper needs one or more column names.');
+        }
         $this->map = $names;
     }
 

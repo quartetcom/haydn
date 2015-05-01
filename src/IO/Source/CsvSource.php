@@ -15,7 +15,7 @@ class CsvSource extends AbstractSource
     {
         $this->csv = $csv;
 
-        parent::__construct($name, new SimpleArrayColumnMapper([]));
+        parent::__construct($name, new SimpleArrayColumnMapper([], true));
 
         $this->setColumnsFromRow($bodyOffset - 1);
     }
@@ -27,7 +27,7 @@ class CsvSource extends AbstractSource
     {
         $this->csv->rewind();
         while (($line = $this->csv->current()) !== false) {
-            yield $this->makeRow($line);
+            yield $this->columnMapper->makeRow($line);
             $this->csv->next();
         }
     }

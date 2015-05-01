@@ -3,6 +3,7 @@ namespace Quartet\Haydn;
 
 use Quartet\Common\CsvUtil\Csv;
 use Quartet\Haydn\IO\ColumnMapper\HashKeyColumnMapper;
+use Quartet\Haydn\IO\ColumnMapper\NullColumnMapper;
 use Quartet\Haydn\IO\ColumnMapper\SimpleArrayColumnMapper;
 use Quartet\Haydn\IO\Source\ArraySource;
 use Quartet\Haydn\IO\Source\CsvSource;
@@ -20,7 +21,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
             ["お","か", 50,3000],
         ];
 
-        $aSource = new ArraySource('array', $data, new SimpleArrayColumnMapper([]));
+        $aSource = new ArraySource('array', $data, new NullColumnMapper());
 
         $set = new Set($aSource, 'array');
 
@@ -78,9 +79,8 @@ class SetTest extends \PHPUnit_Framework_TestCase
             ['name' => 'Spirit',  'price' => 160],
         ];
 
-        $mapper = new HashKeyColumnMapper();
-        $fruitSet = new Set(new ArraySource('fruit', $fruits, $mapper));
-        $drinkSet = new Set(new ArraySource('drink', $drinks, $mapper));
+        $fruitSet = new Set(new ArraySource('fruit', $fruits, new HashKeyColumnMapper()));
+        $drinkSet = new Set(new ArraySource('drink', $drinks, new HashKeyColumnMapper()));
 
         $fruitDrinkSet = $fruitSet->product($drinkSet);
         $result = $fruitDrinkSet->toArray();
@@ -108,9 +108,8 @@ class SetTest extends \PHPUnit_Framework_TestCase
             ['name' => 'Spirit',  'price' => 160],
         ];
 
-        $mapper = new HashKeyColumnMapper();
-        $fruitSet = new Set(new ArraySource('fruit', $fruits, $mapper));
-        $drinkSet = new Set(new ArraySource('drink', $drinks, $mapper));
+        $fruitSet = new Set(new ArraySource('fruit', $fruits, new HashKeyColumnMapper()));
+        $drinkSet = new Set(new ArraySource('drink', $drinks, new HashKeyColumnMapper()));
 
         $fruitDrinkSet = $fruitSet->product($drinkSet);
         $fruitDrinkMenu = $fruitDrinkSet->select([function($r){
@@ -152,9 +151,8 @@ class SetTest extends \PHPUnit_Framework_TestCase
      */
     public function testLarger()
     {
-        $mapper = new SimpleArrayColumnMapper([]);
-        $setA = new Set(new ArraySource('a', $this->numarray(1000), $mapper), 'a');
-        $setB = new Set(new ArraySource('b', $this->strarray(100), $mapper), 'b');
+        $setA = new Set(new ArraySource('a', $this->numarray(1000), new NullColumnMapper()), 'a');
+        $setB = new Set(new ArraySource('b', $this->strarray(100), new NullColumnMapper()), 'b');
 
         $abSet = $setA->product($setB);
 
@@ -191,9 +189,9 @@ class SetTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider 行生成データ
      */
-    public function 行生成($data, $expected)
+    public function 行生成($data, $mapper, $expected)
     {
-        $set = new Set(new ArraySource($data), 'test');
+        $set = new Set(new ArraySource('test', $data, $mapper));
         $result = [];
         foreach ($set as $row) {
             $result[] = $row;
@@ -206,10 +204,13 @@ class SetTest extends \PHPUnit_Framework_TestCase
     {
         return [
             '単純配列' => [
-                [1, 2, 3, 4], [['test'=>1], ['test'=>2], ['test'=>3], ['test'=>4]]
+                [[1], [2], [3], [4]],
+                new NullColumnMapper(),
+                [['test.0'=>1], ['test.0'=>2], ['test.0'=>3], ['test.0'=>4]]
             ],
             '連想配列' => [
                 [['name'=>'a'], ['name'=>'b'], ['name'=>'c'], ['name'=>'d']],
+                new HashKeyColumnMapper(),
                 [['test.name'=>'a'], ['test.name'=>'b'], ['test.name'=>'c'], ['test.name'=>'d']]
             ]
         ];

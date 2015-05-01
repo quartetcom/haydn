@@ -6,8 +6,6 @@ use Quartet\Haydn\IO\SourceInterface;
 
 abstract class AbstractSource implements SourceInterface
 {
-    const NAME_DELIMITER = '.';
-
     /**
      * @var string
      */
@@ -23,15 +21,12 @@ abstract class AbstractSource implements SourceInterface
      */
     protected $it;
 
-    /**
-     * @var array
-     */
-    private $columnNamesCache = null;
 
     public function __construct($name, ColumnMapperInterface $columnMapper)
     {
         $this->name = $name;
         $this->columnMapper = $columnMapper;
+        $this->columnMapper->setSource($this);
         $this->rewind();
     }
 
@@ -40,7 +35,7 @@ abstract class AbstractSource implements SourceInterface
      */
     public function getName()
     {
-        return $this->getName();
+        return $this->name;
     }
 
     /**
@@ -62,39 +57,11 @@ abstract class AbstractSource implements SourceInterface
     }
 
     /**
-     * @param $data
-     * @return array
-     */
-    protected function makeRow($data)
-    {
-        if ($this->columnNamesCache === null) {
-           $this->initColumnNameCache($data);
-        }
-
-        return array_combine($this->columnNamesCache, $data);
-    }
-
-    /**
      * @return ColumnMapperInterface
      */
     public function getColumnMapper()
     {
         return $this->columnMapper;
-    }
-
-    /**
-     * @param array $data
-     */
-    private function initColumnNameCache($data)
-    {
-        $map = $this->columnMapper->makeMap($data);
-        if (!$map) {
-            $map = range(0, count($data) - 1);
-        }
-
-        $this->columnNamesCache = array_map(function ($name) {
-            return implode(self::NAME_DELIMITER, [$this->name, $name]);
-        }, $map);
     }
 
     /**
