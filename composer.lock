@@ -4,8 +4,51 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7f82b6aa6331da57b77fc09c630bb0e6",
-    "packages": [],
+    "hash": "124809b9341152c43d49f58743691c46",
+    "packages": [
+        {
+            "name": "quartet/common",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:quartetcom/common.git",
+                "reference": "9252ae99210e077fda45c419c32232e12fd13d36"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/quartetcom/common/zipball/9252ae99210e077fda45c419c32232e12fd13d36",
+                "reference": "9252ae99210e077fda45c419c32232e12fd13d36",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.6"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Quartet\\Common\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Quartet\\Common\\": "tests/"
+                }
+            },
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": " ",
+            "time": "2015-04-30 03:49:01"
+        }
+    ],
     "packages-dev": [
         {
             "name": "doctrine/instantiator",
@@ -967,11 +1010,13 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "quartet/common": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "~5.4"
+        "php": "~5.5"
     },
     "platform-dev": []
 }

@@ -37,7 +37,7 @@ class SelectSet extends Set
             $selects = [$selects];
         }
         $this->selects = $selects;
-        parent::__construct(null, $a->alias);
+        parent::__construct(null);
     }
 
     /**

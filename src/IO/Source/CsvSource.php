@@ -2,43 +2,43 @@
 namespace Quartet\Haydn\IO\Source;
 
 use Quartet\Common\CsvUtil\Csv;
-use Quartet\Haydn\IO\SourceInterface;
+use Quartet\Haydn\IO\ColumnMapper\SimpleArrayColumnMapper;
 
-class CsvSource implements SourceInterface
+class CsvSource extends AbstractSource
 {
     /**
      * @var Csv
      */
     private $csv;
 
-    /**
-     * @var \Generator
-     */
-    private $it;
-
-    public function __construct(Csv $csv)
+    public function __construct($name, Csv $csv, $bodyOffset = 1)
     {
         $this->csv = $csv;
-        $this->it = $this->iterate();
+
+        parent::__construct($name, new SimpleArrayColumnMapper([], true));
+
+        $this->setColumnsFromRow($bodyOffset - 1);
     }
 
     /**
-     * {@inheritdoc]
+     * {@inheritdoc}
      */
-    public function getIterator()
-    {
-        return $this->it;
-    }
-
-    /**
-     * @return \Generator
-     */
-    private function iterate()
+    protected function iterate()
     {
         $this->csv->rewind();
-        while (($values = $this->csv->current()) !== false) {
-            yield $values;
+        while (($line = $this->csv->current()) !== false) {
+            yield $this->columnMapper->makeRow($line);
             $this->csv->next();
         }
+    }
+
+    /**
+     * @param integer $rowIndex
+     */
+    public function setColumnsFromRow($rowIndex)
+    {
+        $this->csv->setHeaderPosition($rowIndex);
+        $row = $this->csv->getHeaderRow();
+        $this->columnMapper->setMap($row);
     }
 }

@@ -27,7 +27,7 @@ class ProductSet extends Set
     {
         $this->a = $a;
         $this->b = $b;
-        parent::__construct(null, $a->alias . '-' . $b->alias);
+        parent::__construct(null);
     }
 
     /**
