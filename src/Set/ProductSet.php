@@ -52,4 +52,13 @@ class ProductSet extends Set
     {
         $this->it = $this->productIterator($this->a, $this->b);
     }
+
+    /**
+     * @param $prefixing
+     */
+    public function setPrefixing($prefixing)
+    {
+        $this->a->setPrefixing($prefixing);
+        $this->b->setPrefixing($prefixing);
+    }
 }

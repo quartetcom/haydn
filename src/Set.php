@@ -60,7 +60,10 @@ class Set implements \IteratorAggregate
      */
     public function product(Set $that)
     {
-        return new ProductSet($this, $that);
+        $product = new ProductSet($this, $that);
+        $product->setPrefixing(true);
+
+        return $product;
     }
 
     /**
@@ -83,5 +86,13 @@ class Set implements \IteratorAggregate
         }
 
         return $buf;
+    }
+
+    /**
+     * @param $prefixing
+     */
+    public function setPrefixing($prefixing)
+    {
+        $this->source->setPrefixing($prefixing);
     }
 }

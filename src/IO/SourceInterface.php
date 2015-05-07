@@ -19,4 +19,10 @@ interface SourceInterface extends \IteratorAggregate
      * @return array
      */
     public function toArray();
+
+    /**
+     * @param $prefixing
+     * @return mixed
+     */
+    public function setPrefixing($prefixing);
 }

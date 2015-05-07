@@ -33,6 +33,7 @@ class ArraySourceTest extends \PHPUnit_Framework_TestCase
         $columnNames = ['a', 'b', 'c'];
 
         $source = new ArraySource('foo', $data, new SimpleArrayColumnMapper($columnNames));
+        $source->setPrefixing(true);
 
         $result = [];
         foreach ($source as $line) {
@@ -56,6 +57,7 @@ class ArraySourceTest extends \PHPUnit_Framework_TestCase
         ];
 
         $source = new ArraySource('bar', $data, new HashKeyColumnMapper());
+        $source->setPrefixing(true);
 
         $result = [];
         foreach ($source as $line) {

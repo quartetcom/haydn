@@ -22,6 +22,7 @@ class CsvSourceTest extends \PHPUnit_Framework_TestCase
         $source = new CsvSource('foo', new Csv(__DIR__.'/data/test.csv'));
 
         $source->setColumnsFromRow(0);
+        $source->setPrefixing(true);
 
         $result = [];
         foreach ($source as $line) {

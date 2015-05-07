@@ -76,4 +76,12 @@ abstract class AbstractSource implements SourceInterface
 
         return $buf;
     }
+
+    /**
+     * @param $prefixing
+     */
+    public function setPrefixing($prefixing)
+    {
+        $this->columnMapper->setPrefixing($prefixing);
+    }
 }
