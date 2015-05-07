@@ -29,4 +29,10 @@ interface ColumnMapperInterface
      * @return mixed
      */
     public function setSource(SourceInterface $source);
+
+    /**
+     * @param $prefixing
+     * @return mixed
+     */
+    public function setPrefixing($prefixing);
 }

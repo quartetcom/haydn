@@ -63,4 +63,12 @@ class SelectSet extends Set
     {
         $this->it = $this->selectIterator($this->a, $this->selects);
     }
+
+    /**
+     * @param $prefixing
+     */
+    public function setPrefixing($prefixing)
+    {
+        $this->a->setPrefixing($prefixing);
+    }
 }

@@ -24,6 +24,11 @@ abstract class AbstractColumnMapper implements ColumnMapperInterface
     protected $columnNamesCache = null;
 
     /**
+     * @var bool
+     */
+    protected $enablePrefix = false;
+
+    /**
      * {@inheritdoc}
      */
     public function setMap($map)
@@ -52,7 +57,11 @@ abstract class AbstractColumnMapper implements ColumnMapperInterface
         $map = static::makeMap($data);
 
         $this->columnNamesCache = array_map(function ($name) {
-            return implode(self::NAME_DELIMITER, [$this->source->getName(), $name]);
+            if ($this->enablePrefix) {
+                return implode(self::NAME_DELIMITER, [$this->source->getName(), $name]);
+            } else {
+                return $name;
+            }
         }, $map);
     }
 
@@ -65,5 +74,14 @@ abstract class AbstractColumnMapper implements ColumnMapperInterface
             throw new \RuntimeException('Cannot reuse column mapper for multiple sources.');
         }
         $this->source = $source;
+    }
+
+    /**
+     * @param $prefixing
+     * @return mixed|void
+     */
+    public function setPrefixing($prefixing)
+    {
+        $this->enablePrefix = $prefixing;
     }
 }

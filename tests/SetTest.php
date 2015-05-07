@@ -13,7 +13,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function 配列ソース()
+    public function 配列ソース_エイリアス無し()
     {
         $data = [
             ["あ","い",150,200],
@@ -21,9 +21,42 @@ class SetTest extends \PHPUnit_Framework_TestCase
             ["お","か", 50,3000],
         ];
 
-        $aSource = new ArraySource('array', $data, new NullColumnMapper());
+        $aSource = new ArraySource('array', $data, new SimpleArrayColumnMapper([
+            'char1', 'char2', 'num1', 'num2'
+        ]));
 
         $set = new Set($aSource, 'array');
+
+        $this->assertThat($set, $this->isInstanceOf(Set::class));
+
+        $result = [];
+        foreach ($set as $record) {
+            $result[] = $record;
+        }
+
+        $this->assertThat($result[0]['char1'], $this->equalTo('あ'));
+        $this->assertThat($result[0]['num1'], $this->equalTo(150));
+        $this->assertThat($result[1]['char1'], $this->equalTo('う'));
+        $this->assertThat($result[1]['char2'], $this->equalTo('え'));
+        $this->assertThat($result[2]['char1'], $this->equalTo('お'));
+        $this->assertThat($result[2]['num2'], $this->equalTo(3000));
+    }
+
+    /**
+     * @test
+     */
+    public function 配列ソース_エイリアスあり()
+    {
+        $data = [
+            ["あ","い",150,200],
+            ["う","え",250,300],
+            ["お","か", 50,3000],
+        ];
+
+        $aSource = new ArraySource('array', $data, $mapper = new NullColumnMapper());
+
+        $set = new Set($aSource, 'array');
+        $set->setPrefixing(true);
 
         $this->assertThat($set, $this->isInstanceOf(Set::class));
 
@@ -48,6 +81,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $aSource = new CsvSource('gad_group_report', new Csv(__DIR__.'/fixtures/google_ad_group_report.csv'), 2);
 
         $set = new Set($aSource, 'gad_group_report');
+        $set->setPrefixing(true);
 
         $this->assertThat($set, $this->isInstanceOf(Set::class));
 
@@ -189,9 +223,11 @@ class SetTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider 行生成データ
      */
-    public function 行生成($data, $mapper, $expected)
+    public function 行生成($data, $mapper, $prefixing, $expected)
     {
         $set = new Set(new ArraySource('test', $data, $mapper));
+        $set->setPrefixing($prefixing);
+
         $result = [];
         foreach ($set as $row) {
             $result[] = $row;
@@ -203,16 +239,30 @@ class SetTest extends \PHPUnit_Framework_TestCase
     public function 行生成データ()
     {
         return [
-            '単純配列' => [
+            '単純配列プレフィックス無し' => [
                 [[1], [2], [3], [4]],
                 new NullColumnMapper(),
+                false,
+                [[0=>1], [0=>2], [0=>3], [0=>4]]
+            ],
+            '単純配列プレフィックスあり' => [
+                [[1], [2], [3], [4]],
+                new NullColumnMapper(),
+                true,
                 [['test.0'=>1], ['test.0'=>2], ['test.0'=>3], ['test.0'=>4]]
             ],
-            '連想配列' => [
+            '連想配列プレフィックスなし' => [
                 [['name'=>'a'], ['name'=>'b'], ['name'=>'c'], ['name'=>'d']],
                 new HashKeyColumnMapper(),
+                false,
+                [['name'=>'a'], ['name'=>'b'], ['name'=>'c'], ['name'=>'d']]
+            ],
+            '連想配列プレフィックスあり' => [
+                [['name'=>'a'], ['name'=>'b'], ['name'=>'c'], ['name'=>'d']],
+                new HashKeyColumnMapper(),
+                true,
                 [['test.name'=>'a'], ['test.name'=>'b'], ['test.name'=>'c'], ['test.name'=>'d']]
-            ]
+            ],
         ];
     }
 }
