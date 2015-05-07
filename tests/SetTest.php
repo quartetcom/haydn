@@ -13,7 +13,39 @@ class SetTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function 配列ソース()
+    public function 配列ソース_エイリアス無し()
+    {
+        $data = [
+            ["あ","い",150,200],
+            ["う","え",250,300],
+            ["お","か", 50,3000],
+        ];
+
+        $aSource = new ArraySource('array', $data, new SimpleArrayColumnMapper([
+            'char1', 'char2', 'num1', 'num2'
+        ]));
+
+        $set = new Set($aSource, 'array');
+
+        $this->assertThat($set, $this->isInstanceOf(Set::class));
+
+        $result = [];
+        foreach ($set as $record) {
+            $result[] = $record;
+        }
+
+        $this->assertThat($result[0]['char1'], $this->equalTo('あ'));
+        $this->assertThat($result[0]['num1'], $this->equalTo(150));
+        $this->assertThat($result[1]['char1'], $this->equalTo('う'));
+        $this->assertThat($result[1]['char2'], $this->equalTo('え'));
+        $this->assertThat($result[2]['char1'], $this->equalTo('お'));
+        $this->assertThat($result[2]['num2'], $this->equalTo(3000));
+    }
+
+    /**
+     * @test
+     */
+    public function 配列ソース_エイリアスあり()
     {
         $data = [
             ["あ","い",150,200],
