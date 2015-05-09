@@ -7,6 +7,7 @@ use Quartet\Haydn\IO\ColumnMapper\NullColumnMapper;
 use Quartet\Haydn\IO\ColumnMapper\SimpleArrayColumnMapper;
 use Quartet\Haydn\IO\Source\ArraySource;
 use Quartet\Haydn\IO\Source\CsvSource;
+use Quartet\Haydn\Matcher\Matcher;
 
 class SetTest extends \PHPUnit_Framework_TestCase
 {
@@ -177,6 +178,78 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertThat($result[10]['price'], $this->equalTo(240));
         $this->assertThat($result[11]['item'], $this->equalTo('Spirit Banana'));
         $this->assertThat($result[11]['price'], $this->equalTo(240));
+    }
+
+    /**
+     * @test
+     */
+    public function testFilterSet()
+    {
+        $products = [
+            ['name' => 'Apple',   'price' => 100, 'type' => 'fruit'],
+            ['name' => 'Yoghurt', 'price' => 200, 'type' => 'drink'],
+            ['name' => 'Soda',    'price' => 120, 'type' => 'drink'],
+            ['name' => 'Banana',  'price' =>  80, 'type' => 'fruit'],
+            ['name' => 'Spirit',  'price' => 160, 'type' => 'drink'],
+        ];
+
+        $productSet = new Set(new ArraySource('product', $products, new HashKeyColumnMapper()));
+
+        $fruitSet = $productSet->filter(new Matcher(['type' => 'fruit']));
+        $drinkSet = $productSet->filter(new Matcher(['type' => 'drink']));
+
+        $result = $fruitSet->toArray();
+        $this->assertThat(count($result), $this->equalTo(2));
+        $this->assertThat($result[0]['name'], $this->equalTo('Apple'));
+        $this->assertThat($result[0]['price'], $this->equalTo(100));
+        $this->assertThat($result[1]['name'], $this->equalTo('Banana'));
+        $this->assertThat($result[1]['price'], $this->equalTo(80));
+
+        $result = $drinkSet->toArray();
+        $this->assertThat(count($result), $this->equalTo(3));
+        $this->assertThat($result[0]['name'], $this->equalTo('Yoghurt'));
+        $this->assertThat($result[0]['price'], $this->equalTo(200));
+        $this->assertThat($result[1]['name'], $this->equalTo('Soda'));
+        $this->assertThat($result[1]['price'], $this->equalTo(120));
+        $this->assertThat($result[2]['name'], $this->equalTo('Spirit'));
+        $this->assertThat($result[2]['price'], $this->equalTo(160));
+    }
+
+    /**
+     * @test
+     */
+    public function testDevide()
+    {
+        $products = [
+            ['name' => 'Apple',   'price' => 100, 'type' => 'fruit'],
+            ['name' => 'Yoghurt', 'price' => 200, 'type' => 'drink'],
+            ['name' => 'Soda',    'price' => 120, 'type' => 'drink'],
+            ['name' => 'Banana',  'price' =>  80, 'type' => 'fruit'],
+            ['name' => 'Spirit',  'price' => 160, 'type' => 'drink'],
+        ];
+
+        $productSet = new Set(new ArraySource('product', $products, new HashKeyColumnMapper()));
+
+        list($fruitSet, $drinkSet) = $productSet->devide([
+            'fruit' => new Matcher(['type' => 'fruit']),
+            'drink' => new Matcher(['type' => 'drink']),
+        ]);
+
+        $result = $fruitSet->toArray();
+        $this->assertThat(count($result), $this->equalTo(2));
+        $this->assertThat($result[0]['name'], $this->equalTo('Apple'));
+        $this->assertThat($result[0]['price'], $this->equalTo(100));
+        $this->assertThat($result[1]['name'], $this->equalTo('Banana'));
+        $this->assertThat($result[1]['price'], $this->equalTo(80));
+
+        $result = $drinkSet->toArray();
+        $this->assertThat(count($result), $this->equalTo(3));
+        $this->assertThat($result[0]['name'], $this->equalTo('Yoghurt'));
+        $this->assertThat($result[0]['price'], $this->equalTo(200));
+        $this->assertThat($result[1]['name'], $this->equalTo('Soda'));
+        $this->assertThat($result[1]['price'], $this->equalTo(120));
+        $this->assertThat($result[2]['name'], $this->equalTo('Spirit'));
+        $this->assertThat($result[2]['price'], $this->equalTo(160));
     }
 
     /**
