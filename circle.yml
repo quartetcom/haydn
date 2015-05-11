@@ -1,0 +1,20 @@
+machine:
+  php:
+    version: 5.5.11
+
+dependencies:
+  cache_directories:
+    - "~/.composer"
+  override:
+    # add circle.php.ini
+    - cp circle.php.ini ~/.phpenv/versions/$(phpenv global)/etc/conf.d/
+    # install php dependencies
+    - composer config github-oauth.github.com e1d4920c917555ab3bbc0b5964314d1107f6b1b2
+    - composer config http-basic.dev.quartetcom.co.jp quartet qc5841
+    - composer install --no-interaction
+
+
+test:
+  override:
+    # run unit tests
+    - phpunit
