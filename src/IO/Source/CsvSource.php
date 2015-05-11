@@ -27,7 +27,11 @@ class CsvSource extends AbstractSource
     {
         $this->csv->rewind();
         while (($line = $this->csv->current()) !== false) {
-            yield $this->columnMapper->makeRow($line);
+            $row = $this->columnMapper->makeRow($line);
+            if ($row === null) {
+                continue;
+            }
+            yield $row;
             $this->csv->next();
         }
     }
