@@ -1,5 +1,7 @@
 # Haydn
 
+[![Circle CI](https://circleci.com/gh/quartetcom/haydn/tree/master.svg?style=shield&circle-token=7fa1285eed7256aab2cad085d139dd4a9b26f0ff)](https://circleci.com/gh/quartetcom/haydn/tree/master)
+
 配列に対してかけ算や列演算を宣言的に指定できるライブラリ。次のような事ができる。
 
 ```php
