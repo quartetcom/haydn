@@ -57,11 +57,19 @@ abstract class AbstractSource implements SourceInterface
     }
 
     /**
-     * @return ColumnMapperInterface
+     * {@inheritdoc}
      */
     public function getColumnMapper()
     {
         return $this->columnMapper;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setColumnMapper(ColumnMapperInterface $mapper)
+    {
+        $this->columnMapper = $mapper;
     }
 
     /**

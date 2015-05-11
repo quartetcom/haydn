@@ -25,4 +25,14 @@ interface SourceInterface extends \IteratorAggregate
      * @return mixed
      */
     public function setPrefixing($prefixing);
+
+    /**
+     * @return ColumnMapperInterface
+     */
+    public function getColumnMapper();
+
+    /**
+     * @param ColumnMapperInterface $mapper
+     */
+    public function setColumnMapper(ColumnMapperInterface $mapper);
 }
