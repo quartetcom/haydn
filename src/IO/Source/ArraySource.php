@@ -19,7 +19,11 @@ class ArraySource extends AbstractSource
     protected function iterate()
     {
         foreach ($this->data as $line) {
-            yield $this->columnMapper->makeRow($line);
+            $row = $this->columnMapper->makeRow($line);
+            if ($row === null) {
+                continue;
+            }
+            yield $row;
         }
     }
 }

@@ -21,6 +21,10 @@ abstract class AbstractSource implements SourceInterface
      */
     protected $it;
 
+    /**
+     * @var bool
+     */
+    protected $skipIllegalRow = true;
 
     public function __construct($name, ColumnMapperInterface $columnMapper)
     {
@@ -91,5 +95,21 @@ abstract class AbstractSource implements SourceInterface
     public function setPrefixing($prefixing)
     {
         $this->columnMapper->setPrefixing($prefixing);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getSkipIllegalRow()
+    {
+        return $this->skipIllegalRow;
+    }
+
+    /**
+     * @param boolean $skip
+     */
+    public function setSkipIllegalRow($skip)
+    {
+        $this->skipIllegalRow = $skip;
     }
 }

@@ -39,11 +39,20 @@ abstract class AbstractColumnMapper implements ColumnMapperInterface
     /**
      * @param $data
      * @return array
+     * @throws \RuntimeException
      */
     public function makeRow($data)
     {
         if ($this->columnNamesCache === null) {
             $this->initColumnNameCache($data);
+        }
+
+        if (count($this->columnNamesCache) !== count($data)) {
+            if ($this->source->getSkipIllegalRow() === true) {
+                return null;
+            } else {
+                throw new \RuntimeException('illegal column number:'.PHP_EOL. print_r($data, true));
+            }
         }
 
         return array_combine($this->columnNamesCache, $data);

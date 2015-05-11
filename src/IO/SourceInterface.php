@@ -35,4 +35,14 @@ interface SourceInterface extends \IteratorAggregate
      * @param ColumnMapperInterface $mapper
      */
     public function setColumnMapper(ColumnMapperInterface $mapper);
+
+    /**
+     * @return bool
+     */
+    public function getSkipIllegalRow();
+
+    /**
+     * @param bool $skip
+     */
+    public function setSkipIllegalRow($skip);
 }
