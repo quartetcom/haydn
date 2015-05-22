@@ -31,7 +31,11 @@ class Matcher implements MatcherInterface
     {
         $match = true;
         foreach ($this->option as $key => $value) {
-            $match = $match && ($row[$key] === $value);
+            if (is_callable($value)) {
+                $match = $match && call_user_func($value, $row[$key]);
+            } else {
+                $match = $match && ($row[$key] === $value);
+            }
         }
 
         return $match;
