@@ -17,6 +17,7 @@ use Quartet\Haydn\Matcher\MatcherInterface;
 use Quartet\Haydn\Set\FilterSet;
 use Quartet\Haydn\Set\ProductSet;
 use Quartet\Haydn\Set\SelectSet;
+use Quartet\Haydn\Set\UnionSet;
 
 class Set implements \IteratorAggregate
 {
@@ -99,6 +100,15 @@ class Set implements \IteratorAggregate
         }
 
         return $sets;
+    }
+
+    /**
+     * @param Set $that
+     * @return UnionSet
+     */
+    public function union(Set $that)
+    {
+        return new UnionSet($this, $that);
     }
 
     /**
