@@ -178,21 +178,24 @@ $allSet = $fruitSet->union($drinkSet);
 
 ### Grouping
 
-グルーピング演算したSetを返す。ここでグルーピング演算とは、グループのキーとなる集合Aと集合の各要素aに紐付く集合Bがある時、次のものを指す。
+グルーピング演算したSetを返す。ここでグルーピング演算とは、キーとなる集合の各要素それぞれがさらに明細の集合を有するような、「キーの数だけグループを持つ集合」を作成することを指す。
+具体的には以下のとおり。
 
-1. キー集合AのSet
-2. a ごとのヘッダー行セレクタ
-3. a ごとの明細行のSet（aに紐付くBのSet）
-4. a ごとのフッター行セレクタ
-
-1の要素ごとに、2、3、4への展開を行う。
-この演算をA全体に適用した結果を持つSetが返される。
+* キー集合Aがあり、
+* Aの各要素a1,a2,a3,...ぞれに対して明細集合B1,B2,B3,...を作成したい場合に、
+* Aのある要素anを以下のような行に展開し、それをa1,a2,a3,...すべてに適用する
+    * ヘッダー行（anグループの先頭を宣言する行）
+    * 明細集合Bnの各行
+    * フッター行（anグループの末尾を宣言する行）
 
 ```php
-$k1 = new Set(new SingleColumnArraySource('k1', ['あいう', 'かきく', 'さしす']));
+$k1 = new Set(new SingleColumnArraySource('k1', ['あいう', 'かきく']));
 $k2 = new Set(new SingleColumnArraySource('k2', ['abc', 'def']));
+$k3 = new Set(new SingleColumnArraySource('k3', ['123', '456']));
 
-$g1 = new Set\GroupingSet($k1->product($k2),
+$g1 = new Set\GroupingSet(
+        // Key Set
+        $k1->product($k2),
         // Header Selector
         function ($r) { return ['type' => 'header', 'name' => $r['k1'] . '-' . $r['k2']]; },
         // Detail Set
@@ -212,4 +215,42 @@ $g1 = new Set\GroupingSet($k1->product($k2),
     
 $all = $g1->toArray();
 var_dump($all);
+
+// [
+//     'type' => 'header',
+//     'name' => 'あいう-abc',
+// ], [
+//     'type' => 'キーワード',
+//     'keyword' => 'あいう abc 123',
+// ], [
+//     'type' => 'キーワード',
+//     'keyword' => 'あいう abc 456',
+// ], [
+//     'type' => 'header',
+//     'name' => 'あいう-def',
+// ], [
+//     'type' => 'キーワード',
+//     'keyword' => 'あいう def 123',
+// ], [
+//     'type' => 'キーワード',
+//     'keyword' => 'あいう def 456',
+// ], [
+//     'type' => 'header',
+//     'name' => 'かきく-abc',
+// ], [
+//     'type' => 'キーワード',
+//     'keyword' => 'かきく abc 123',
+// ], [
+//     'type' => 'キーワード',
+//     'keyword' => 'かきく abc 456',
+// ], [
+//     'type' => 'header',
+//     'name' => 'かきく-def',
+// ], [
+//     'type' => 'キーワード',
+//     'keyword' => 'かきく def 123',
+// ], [
+//     'type' => 'キーワード',
+//     'keyword' => 'かきく def 456',
+// ],
 ```
