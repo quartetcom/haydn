@@ -196,9 +196,9 @@ $k3 = new Set(new SingleColumnArraySource('k3', ['123', '456']));
 $g1 = new Set\GroupingSet(
         // Key Set
         $k1->product($k2),
-        // Header Selector
+        // Header Generator
         function ($r) { return ['type' => 'header', 'name' => $r['k1'] . '-' . $r['k2']]; },
-        // Detail Set
+        // Detail Set Generator
         function ($r) use ($k3) {
             $set = new Set(new SingleRowSource('k1k2', $r));
             $resultSet = $set->product($k3)->select([function ($r) {
@@ -209,7 +209,7 @@ $g1 = new Set\GroupingSet(
             }]);
             return $resultSet;
         },
-        // Footer Selector
+        // Footer Generator
         null
     );
     

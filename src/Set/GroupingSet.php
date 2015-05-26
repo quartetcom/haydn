@@ -23,7 +23,7 @@ class GroupingSet extends Set
     /**
      * @var \Callable
      */
-    private $headerSelector;
+    private $headerGenerator;
     /**
      * @var \Callable
      */
@@ -31,14 +31,14 @@ class GroupingSet extends Set
     /**
      * @var \Callable
      */
-    private $footerSelector;
+    private $footerGenerator;
 
-    public function __construct(Set $memberSet, $headerSelector, $memberSetGenerator, $footerSelector)
+    public function __construct(Set $memberSet, $headerGenerator, $memberSetGenerator, $footerGenerator)
     {
         $this->memberSet = $memberSet;
-        $this->headerSelector = $headerSelector;
+        $this->headerGenerator = $headerGenerator;
         $this->memberSetGenerator = $memberSetGenerator;
-        $this->footerSelector = $footerSelector;
+        $this->footerGenerator = $footerGenerator;
 
         parent::__construct(null);
     }
@@ -46,15 +46,15 @@ class GroupingSet extends Set
     protected function groupingIterator() {
         $this->memberSet->rewind();
         foreach ($this->memberSet->it as $r1) {
-            if ($this->headerSelector) {
-                yield call_user_func($this->headerSelector, $r1);
+            if ($this->headerGenerator) {
+                yield call_user_func($this->headerGenerator, $r1);
             }
             $gen = call_user_func($this->memberSetGenerator, $r1);
             foreach ($gen as $r2) {
                 yield $r2;
             }
-            if ($this->footerSelector) {
-                yield call_user_func($this->footerSelector, $r1);
+            if ($this->footerGenerator) {
+                yield call_user_func($this->footerGenerator, $r1);
             }
         }
     }
