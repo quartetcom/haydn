@@ -1,5 +1,9 @@
 # Haydn
 
+<div style="float: right;">
+<img src="https://cloud.githubusercontent.com/assets/89830/7813142/4a65559a-03f3-11e5-8087-4cd0d7e114d2.jpg">
+</div>
+
 [![Circle CI](https://circleci.com/gh/quartetcom/haydn/tree/master.svg?style=shield&circle-token=7fa1285eed7256aab2cad085d139dd4a9b26f0ff)](https://circleci.com/gh/quartetcom/haydn/tree/master)
 
 配列に対してかけ算や列演算を宣言的に指定できるライブラリ。
