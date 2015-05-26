@@ -12,27 +12,49 @@ class GroupingSetTest extends \PHPUnit_Framework_TestCase
      */
     public function testGrouping()
     {
-        $k1 = new Set(new SingleColumnArraySource('k1', ['あいう', 'かきく', 'さしす']));
-        $k2 = new Set(new SingleColumnArraySource('k2', ['abc', 'def', 'ghi']));
-        $k3 = new Set(new SingleColumnArraySource('k3', ['プログラマ', 'エンジニア', 'PG', 'SE']));
+        $k1 = new Set(new SingleColumnArraySource('k1', ['あいう', 'かきく']));
+        $k2 = new Set(new SingleColumnArraySource('k2', ['abc', 'def']));
+        $k3 = new Set(new SingleColumnArraySource('k3', ['123', '456']));
 
-        $g1 = new GroupingSet($k1->product($k2),
-            function ($r) { return ['type' => '広告グループ', 'name' => $r['k1'] . '_' . $r['k2']]; },
+        $g1 = new Set\GroupingSet(
+        // Key Set
+            $k1->product($k2),
+            // Header Selector
+            function ($r) { return ['type' => 'header', 'name' => $r['k1'] . '-' . $r['k2']]; },
+            // Detail Set
             function ($r) use ($k3) {
                 $set = new Set(new SingleRowSource('k1k2', $r));
                 $resultSet = $set->product($k3)->select([function ($r) {
                     return [
-                        'type' => 'キーワード',
-                        'keyword' => $r['k1'] . ' ' . $r['k2'] . ' ' . $r['k3'],
+                        'type' => 'detail',
+                        'content' => $r['k1'] . ' ' . $r['k2'] . ' ' . $r['k3'],
                     ];
                 }]);
                 return $resultSet;
             },
+            // Footer Selector
             null
         );
 
-        $this->assertThat($g1, $this->isInstanceOf(Set::class));
-        $result = $g1->toArray();
-        $this->assertThat(count($result), $this->equalTo(45));
+        $all = $g1->toArray();
+
+        $this->assertThat(count($all), $this->equalTo(12));
+
+        $expected = [
+            ['type' => 'header', 'name' => 'あいう-abc'],
+            ['type' => 'detail', 'content' => 'あいう abc 123'],
+            ['type' => 'detail', 'content' => 'あいう abc 456'],
+            ['type' => 'header', 'name' => 'あいう-def'],
+            ['type' => 'detail', 'content' => 'あいう def 123'],
+            ['type' => 'detail', 'content' => 'あいう def 456'],
+            ['type' => 'header', 'name' => 'かきく-abc'],
+            ['type' => 'detail', 'content' => 'かきく abc 123'],
+            ['type' => 'detail', 'content' => 'かきく abc 456'],
+            ['type' => 'header', 'name' => 'かきく-def'],
+            ['type' => 'detail', 'content' => 'かきく def 123'],
+            ['type' => 'detail', 'content' => 'かきく def 456'],
+        ];
+
+        $this->assertThat($all, $this->equalTo($expected));
     }
 }
