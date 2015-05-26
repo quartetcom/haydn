@@ -203,8 +203,8 @@ $g1 = new Set\GroupingSet(
             $set = new Set(new SingleRowSource('k1k2', $r));
             $resultSet = $set->product($k3)->select([function ($r) {
                 return [
-                    'type' => 'キーワード',
-                    'keyword' => $r['k1'] . ' ' . $r['k2'] . ' ' . $r['k3'],
+                    'type' => 'detail',
+                    'content' => $r['k1'] . ' ' . $r['k2'] . ' ' . $r['k3'],
                 ];
             }]);
             return $resultSet;
@@ -220,37 +220,37 @@ var_dump($all);
 //     'type' => 'header',
 //     'name' => 'あいう-abc',
 // ], [
-//     'type' => 'キーワード',
-//     'keyword' => 'あいう abc 123',
+//     'type' => 'detail',
+//     'content' => 'あいう abc 123',
 // ], [
-//     'type' => 'キーワード',
-//     'keyword' => 'あいう abc 456',
+//     'type' => 'detail',
+//     'content' => 'あいう abc 456',
 // ], [
 //     'type' => 'header',
 //     'name' => 'あいう-def',
 // ], [
-//     'type' => 'キーワード',
-//     'keyword' => 'あいう def 123',
+//     'type' => 'detail',
+//     'content' => 'あいう def 123',
 // ], [
-//     'type' => 'キーワード',
-//     'keyword' => 'あいう def 456',
+//     'type' => 'detail',
+//     'content' => 'あいう def 456',
 // ], [
 //     'type' => 'header',
 //     'name' => 'かきく-abc',
 // ], [
-//     'type' => 'キーワード',
-//     'keyword' => 'かきく abc 123',
+//     'type' => 'detail',
+//     'content' => 'かきく abc 123',
 // ], [
-//     'type' => 'キーワード',
-//     'keyword' => 'かきく abc 456',
+//     'type' => 'detail',
+//     'content' => 'かきく abc 456',
 // ], [
 //     'type' => 'header',
 //     'name' => 'かきく-def',
 // ], [
-//     'type' => 'キーワード',
-//     'keyword' => 'かきく def 123',
+//     'type' => 'detail',
+//     'content' => 'かきく def 123',
 // ], [
-//     'type' => 'キーワード',
-//     'keyword' => 'かきく def 456',
+//     'type' => 'detail',
+//     'content' => 'かきく def 456',
 // ],
 ```
