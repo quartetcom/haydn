@@ -258,3 +258,170 @@ var_dump($all);
 //     'content' => 'かきく def 456',
 // ],
 ```
+
+## Source
+
+Setのデータ供給源（データソース）。
+
+- ArraySource
+- CsvSource
+- SingleColumnArraySource
+- SingleRowSource
+
+### ArraySource
+
+PHPの配列（2次元）をデータソースとして利用する。
+
+```php
+$fruitArray = [
+    ['id' => 1, 'name' => 'Apple'],
+    ['id' => 2, 'name' => 'Banana'],
+    ['id' => 3, 'name' => 'Lemon'],
+];
+
+$fruitSet = new Set(new ArraySource('fruit', $fruitArray, new HashKeyColumnMapper()));
+
+$output = $fruitSet->toArray();
+var_dump($output);
+
+// ['id' => 1, 'name' => 'Apple'],
+// ['id' => 2, 'name' => 'Banana'],
+// ['id' => 3, 'name' => 'Lemon']
+```
+
+### CsvSource
+
+CSV形式のファイルをデータソースとして利用する。
+
+id  | name
+----|----
+1   | Apple
+2   | Banana
+3   | Lemon
+
+```php
+$fruitSet = new Set(new CsvSource('fruit', new Csv('/path/to/example.csv')));
+
+$output = $fruitSet->toArray();
+var_dump($output);
+
+// ['id' => 1, 'name' => 'Apple'],
+// ['id' => 2, 'name' => 'Banana'],
+// ['id' => 3, 'name' => 'Lemon']
+```
+
+### SingleColumnArraySource
+
+1列のみのPHP配列（1次元）をデータソースとして利用する。
+
+```php
+$fruitArray = [
+  'Apple',
+  'Banana',
+  'Lemon'];
+
+$fruitSet = new Set(new SingleColumnArraySource('fruit', $fruitArray, new NullColumnMapper()));
+
+$output = $fruitSet->toArray();
+var_dump($output);
+
+// ['fruit' => 'Apple'],
+// ['fruit' => 'Banana'],
+// ['fruit' => 'Lemon'],
+```
+
+### SingleRowSource
+
+1行のみのPHP配列（1次元）をデータソースとして利用する。
+
+```php
+$fruitArray = ['1','Apple','140'];
+
+$fruitSet = new Set(new SingleRowSource('fruit', $fruitArray, new SimpleArrayColumnMapper([
+    'id', 'name', 'price'
+])));
+
+$output = $fruitSet->toArray();
+var_dump($output);
+
+// ['id'=>1, 'name' => 'Apple', 'price'=>140],
+```
+
+## ColumnMapper
+
+Sourceの列名マッピング
+
+- HashKeyColumnMapper
+- SimpleArrayColumnMapper
+- NullColumnMapper
+- ChainMapper
+
+### HashKeyColumnMapper
+
+各行が連想配列になっているデータソースで、連想配列のキー名をそのまま列名として使う。
+
+```php
+$fruitArray = [
+    ['id' => 1, 'name' => 'Apple'],
+    ['id' => 2, 'name' => 'Banana'],
+    ['id' => 3, 'name' => 'Lemon'],
+];
+
+$fruitSet = new Set(new ArraySource('fruit', $fruitArray, new HashKeyColumnMapper()));
+
+$output = $fruitSet->toArray();
+var_dump($output);
+
+// ['id' => 1, 'name' => 'Apple'],
+// ['id' => 2, 'name' => 'Banana'],
+// ['id' => 3, 'name' => 'Lemon']
+```
+
+### SimpleArrayColumnMapper
+
+キーの無い配列データソースに、列名を配列で与える。
+
+```php
+$fruitColumn = ['id', 'name'];
+
+$fruitArray = [
+    [1, 'Apple'],
+    [2, 'Banana'],
+    [3, 'Lemon'],
+];
+
+$fruitSet = new Set(new ArraySource('fruit', $fruitArray, new SimpleArrayColumnMapper($fruitColumn)));
+
+$output = $fruitSet->toArray();
+var_dump($output);
+
+// ['id' => 1, 'name' => 'Apple'],
+// ['id' => 2, 'name' => 'Banana'],
+// ['id' => 3, 'name' => 'Lemon']
+```
+
+### NullColumnMapper
+
+列名マップを使わない。
+
+```php
+$fruitArray = [
+    [1, 'Apple'],
+    [2, 'Banana'],
+    [3, 'Lemon'],
+];
+
+$fruitSet = new Set(new ArraySource('fruit', $fruitArray, new NullColumnMapper()));
+
+$output = $fruitSet->toArray();
+var_dump($output);
+
+// [0 => 1, 1 => 'Apple'],
+// [0 => 2, 1 => 'Banana'],
+// [0 => 3, 1 => 'Lemon']
+```
+
+### ChainMapper
+
+列名マッパーを複数チェインさせる。
+
