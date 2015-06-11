@@ -28,7 +28,8 @@ class MatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testClosureMatcher($row, $expected)
     {
-        $matcher = new Matcher(['name' => function ($value) {
+        $matcher = new Matcher(['name' => function ($value, $calledRow) use ($row) {
+            $this->assertThat($calledRow, $this->equalTo($row));
             return $value !== 'foo';
         }]);
         $result = $matcher->match($row);

@@ -32,7 +32,7 @@ class Matcher implements MatcherInterface
         $match = true;
         foreach ($this->option as $key => $value) {
             if (is_callable($value)) {
-                $match = $match && call_user_func($value, $row[$key]);
+                $match = $match && call_user_func($value, $row[$key], $row);
             } else {
                 $match = $match && ($row[$key] === $value);
             }
