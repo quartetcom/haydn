@@ -57,4 +57,177 @@ class GroupingSetTest extends \PHPUnit_Framework_TestCase
 
         $this->assertThat($all, $this->equalTo($expected));
     }
+
+    /**
+     * @test
+     */
+    public function testGroupAndIdentical()
+    {
+        $k1 = new Set(new SingleColumnArraySource('k1', ['あいう', 'かきく']));
+        $k2 = new Set(new SingleColumnArraySource('k2', ['abc', 'def']));
+
+        $g1 = new Set\GroupingSet(
+        // Key Set
+            $k1,
+            // Header Generator
+            function ($r) { return ['type' => 'header', 'name' => $r['k1']]; },
+            // Detail Set Generator
+            function ($r) use ($k2) {
+                $set = new Set(new SingleRowSource('k1', $r));
+                $resultSet = $set->product($k2)->select([function ($r) {
+                    return [
+                        'type' => 'detail',
+                        'content' => $r['k1'] . ' ' . $r['k2'],
+                    ];
+                }]);
+                return $resultSet;
+            },
+            // Footer Generator
+            null
+        );
+
+        $identical = new IdenticalSet();
+
+        $resultSet = $g1->product($identical);
+
+        $all = $resultSet->toArray();
+
+        $expected = [
+            ['type' => 'header', 'name' => 'あいう'],
+            ['type' => 'detail', 'content' => 'あいう abc'],
+            ['type' => 'detail', 'content' => 'あいう def'],
+            ['type' => 'header', 'name' => 'かきく'],
+            ['type' => 'detail', 'content' => 'かきく abc'],
+            ['type' => 'detail', 'content' => 'かきく def'],
+        ];
+
+        $this->assertThat($all, $this->equalTo($expected));
+
+        $resultSet = $identical->product($g1);
+
+        $all = $resultSet->toArray();
+
+        $expected = [
+            ['type' => 'header', 'name' => 'あいう'],
+            ['type' => 'detail', 'content' => 'あいう abc'],
+            ['type' => 'detail', 'content' => 'あいう def'],
+            ['type' => 'header', 'name' => 'かきく'],
+            ['type' => 'detail', 'content' => 'かきく abc'],
+            ['type' => 'detail', 'content' => 'かきく def'],
+        ];
+
+        $this->assertThat($all, $this->equalTo($expected));
+
+
+
+        $resultSet2 = $g1->union($identical);
+
+        $all = $resultSet2->toArray();
+
+        $expected = [
+            ['type' => 'header', 'name' => 'あいう'],
+            ['type' => 'detail', 'content' => 'あいう abc'],
+            ['type' => 'detail', 'content' => 'あいう def'],
+            ['type' => 'header', 'name' => 'かきく'],
+            ['type' => 'detail', 'content' => 'かきく abc'],
+            ['type' => 'detail', 'content' => 'かきく def'],
+        ];
+
+        $this->assertThat($all, $this->equalTo($expected));
+
+        $resultSet2 = $identical->union($g1);
+
+        $all = $resultSet2->toArray();
+
+        $expected = [
+            ['type' => 'header', 'name' => 'あいう'],
+            ['type' => 'detail', 'content' => 'あいう abc'],
+            ['type' => 'detail', 'content' => 'あいう def'],
+            ['type' => 'header', 'name' => 'かきく'],
+            ['type' => 'detail', 'content' => 'かきく abc'],
+            ['type' => 'detail', 'content' => 'かきく def'],
+        ];
+
+        $this->assertThat($all, $this->equalTo($expected));
+    }
+
+
+    /**
+     * @test
+     */
+    public function testGroupAndEmpty()
+    {
+        $k1 = new Set(new SingleColumnArraySource('k1', ['あいう', 'かきく']));
+        $k2 = new Set(new SingleColumnArraySource('k2', ['abc', 'def']));
+
+        $g1 = new Set\GroupingSet(
+        // Key Set
+            $k1,
+            // Header Generator
+            function ($r) { return ['type' => 'header', 'name' => $r['k1']]; },
+            // Detail Set Generator
+            function ($r) use ($k2) {
+                $set = new Set(new SingleRowSource('k1', $r));
+                $resultSet = $set->product($k2)->select([function ($r) {
+                    return [
+                        'type' => 'detail',
+                        'content' => $r['k1'] . ' ' . $r['k2'],
+                    ];
+                }]);
+                return $resultSet;
+            },
+            // Footer Generator
+            null
+        );
+
+        $empty = new EmptySet();
+
+        $resultSet = $g1->product($empty);
+
+        $all = $resultSet->toArray();
+
+        $expected = [];
+
+        $this->assertThat($all, $this->equalTo($expected));
+
+        $resultSet = $empty->product($g1);
+
+        $all = $resultSet->toArray();
+
+        $expected = [];
+
+        $this->assertThat($all, $this->equalTo($expected));
+
+
+
+        $resultSet2 = $g1->union($empty);
+
+        $all = $resultSet2->toArray();
+
+        $expected = [
+            ['type' => 'header', 'name' => 'あいう'],
+            ['type' => 'detail', 'content' => 'あいう abc'],
+            ['type' => 'detail', 'content' => 'あいう def'],
+            ['type' => 'header', 'name' => 'かきく'],
+            ['type' => 'detail', 'content' => 'かきく abc'],
+            ['type' => 'detail', 'content' => 'かきく def'],
+        ];
+
+        $this->assertThat($all, $this->equalTo($expected));
+
+        $resultSet2 = $empty->union($g1);
+
+        $all = $resultSet2->toArray();
+
+        $expected = [
+            ['type' => 'header', 'name' => 'あいう'],
+            ['type' => 'detail', 'content' => 'あいう abc'],
+            ['type' => 'detail', 'content' => 'あいう def'],
+            ['type' => 'header', 'name' => 'かきく'],
+            ['type' => 'detail', 'content' => 'かきく abc'],
+            ['type' => 'detail', 'content' => 'かきく def'],
+        ];
+
+        $this->assertThat($all, $this->equalTo($expected));
+    }
 }
