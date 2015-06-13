@@ -49,6 +49,65 @@ foreach ($fruitSet as $fruit) {
 }
 ```
 
+### Specific Sets
+
+#### IdenticalSet
+
+```php
+$fruitsAssoc = [
+    ['name' => 'Apple',  'price' => 100],
+    ['name' => 'Banana', 'price' =>  80],
+];
+
+$fruitsSet = new Set(new ArraySource('fruit', $fruitsAssoc, new HashKeyColumnMapper());
+
+$identicalSet = new IdenticalSet();
+
+$all = $fruitSet->product($identicalSet);
+
+// same as $fruitSet
+
+$all = $identicalSet->product($fruitSet);
+
+// same as $fruitSet
+
+$all = $fruitSet->union($identicalSet);
+
+// same as $fruitSet
+
+$all = $identicalSet->union($fruitSet);
+
+// same as $fruitSet
+```
+
+#### EmptySet
+
+```php
+$fruitsAssoc = [
+    ['name' => 'Apple',  'price' => 100],
+    ['name' => 'Banana', 'price' =>  80],
+];
+
+$fruitsSet = new Set(new ArraySource('fruit', $fruitsAssoc, new HashKeyColumnMapper());
+
+$emptySet = new EmptySet();
+
+$all = $fruitSet->product($emptySet);
+
+// empty
+
+$all = $emptySet->product($fruitSet);
+
+// empty
+
+$all = $fruitSet->union($emptySet);
+
+// same as $fruitSet
+
+$all = $emptySet->union($fruitSet);
+
+// same as $fruitSet
+```
 
 ## Set operations
 

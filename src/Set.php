@@ -14,7 +14,9 @@ namespace Quartet\Haydn;
 
 use Quartet\Haydn\IO\SourceInterface;
 use Quartet\Haydn\Matcher\MatcherInterface;
+use Quartet\Haydn\Set\EmptySet;
 use Quartet\Haydn\Set\FilterSet;
+use Quartet\Haydn\Set\IdenticalSet;
 use Quartet\Haydn\Set\ProductSet;
 use Quartet\Haydn\Set\SelectSet;
 use Quartet\Haydn\Set\UnionSet;
@@ -63,6 +65,15 @@ class Set implements \IteratorAggregate
      */
     public function product(Set $that)
     {
+        if ($this instanceof IdenticalSet) {
+            return $that;
+        } elseif ($that instanceof IdenticalSet) {
+            return $this;
+        } elseif ($this instanceof EmptySet) {
+            return $this;
+        } elseif ($that instanceof EmptySet) {
+            return $that;
+        }
         $product = new ProductSet($this, $that);
         $product->setPrefixing(true);
 
@@ -108,6 +119,15 @@ class Set implements \IteratorAggregate
      */
     public function union(Set $that)
     {
+        if ($this instanceof IdenticalSet) {
+            return $that;
+        } elseif ($that instanceof IdenticalSet) {
+            return $this;
+        } elseif ($this instanceof EmptySet) {
+            return $that;
+        } elseif ($that instanceof EmptySet) {
+            return $this;
+        }
         return new UnionSet($this, $that);
     }
 
@@ -117,6 +137,7 @@ class Set implements \IteratorAggregate
     public function toArray()
     {
         $buf = [];
+        $this->rewind();
         foreach ($this as $line) {
             $buf[] = $line;
         }
