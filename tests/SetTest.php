@@ -8,6 +8,8 @@ use Quartet\Haydn\IO\ColumnMapper\SimpleArrayColumnMapper;
 use Quartet\Haydn\IO\Source\ArraySource;
 use Quartet\Haydn\IO\Source\CsvSource;
 use Quartet\Haydn\Matcher\Matcher;
+use Quartet\Haydn\Set\EmptySet;
+use Quartet\Haydn\Set\IdenticalSet;
 
 class SetTest extends \PHPUnit_Framework_TestCase
 {
@@ -337,5 +339,52 @@ class SetTest extends \PHPUnit_Framework_TestCase
                 [['test.name'=>'a'], ['test.name'=>'b'], ['test.name'=>'c'], ['test.name'=>'d']]
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function testCount()
+    {
+        $fruits = [
+            ['name' => 'Apple',  'price' => 100],
+            ['name' => 'Banana', 'price' =>  80],
+        ];
+
+        $drinks = [
+            ['name' => 'Yoghurt', 'price' => 200],
+            ['name' => 'Soda',    'price' => 120],
+            ['name' => 'Spirit',  'price' => 160],
+        ];
+
+        $fruitSet = new Set(new ArraySource('fruit', $fruits, new HashKeyColumnMapper()));
+        $drinkSet = new Set(new ArraySource('drink', $drinks, new HashKeyColumnMapper()));
+
+        $this->assertThat($fruitSet->count(), $this->equalTo(2));
+        $this->assertThat($drinkSet->count(), $this->equalTo(3));
+
+        $temp = $fruitSet->product($drinkSet);
+        $this->assertThat($temp->count(), $this->equalTo(6));
+        $temp = $fruitSet->union($drinkSet);
+        $this->assertThat($temp->count(), $this->equalTo(5));
+
+        $i = new IdenticalSet();
+        $e = new EmptySet();
+
+        $temp = $fruitSet->product($i);
+        $this->assertThat($temp->count(), $this->equalTo(2));
+        $temp = $fruitSet->product($e);
+        $this->assertThat($temp->count(), $this->equalTo(0));
+        $temp = $e->product($drinkSet);
+        $this->assertThat($temp->count(), $this->equalTo(0));
+
+        $temp = $fruitSet->union($i);
+        $this->assertThat($temp->count(), $this->equalTo(2));
+        $temp = $fruitSet->union($e);
+        $this->assertThat($temp->count(), $this->equalTo(2));
+        $temp = $i->union($drinkSet);
+        $this->assertThat($temp->count(), $this->equalTo(3));
+        $temp = $i->union($e);
+        $this->assertThat($temp->count(), $this->equalTo(0));
     }
 }

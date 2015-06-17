@@ -74,4 +74,9 @@ class GroupingSet extends Set
     {
         $this->memberSet->setPrefixing($prefixing);
     }
+
+    public function count()
+    {
+        throw new \RuntimeException('This set does not support count.');
+    }
 }

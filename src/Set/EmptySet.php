@@ -25,4 +25,9 @@ class EmptySet extends Set
     {
         $this->it = new \ArrayIterator([]);
     }
+
+    public function count()
+    {
+        return 0;
+    }
 }

@@ -20,4 +20,12 @@ class SingleRowSource extends AbstractSource
     {
         return [$this->row];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return 1;
+    }
 }

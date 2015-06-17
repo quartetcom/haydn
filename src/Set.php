@@ -21,7 +21,7 @@ use Quartet\Haydn\Set\ProductSet;
 use Quartet\Haydn\Set\SelectSet;
 use Quartet\Haydn\Set\UnionSet;
 
-class Set implements \IteratorAggregate
+class Set implements \IteratorAggregate, \Countable
 {
     /**
      * @var SourceInterface
@@ -151,5 +151,14 @@ class Set implements \IteratorAggregate
     public function setPrefixing($prefixing)
     {
         $this->source->setPrefixing($prefixing);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return $this->source->count();
     }
 }
