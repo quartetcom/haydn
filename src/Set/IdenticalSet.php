@@ -26,4 +26,9 @@ class IdenticalSet extends Set
     {
         $this->it = function () {yield 1;};
     }
+
+    public function count()
+    {
+        return 1;
+    }
 }

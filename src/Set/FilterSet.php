@@ -67,4 +67,9 @@ class FilterSet extends Set
     {
         $this->a->setPrefixing($prefixing);
     }
+
+    public function count()
+    {
+        throw new \RuntimeException('This set does not support count.');
+    }
 }

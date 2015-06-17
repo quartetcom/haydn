@@ -61,4 +61,9 @@ class ProductSet extends Set
         $this->a->setPrefixing($prefixing);
         $this->b->setPrefixing($prefixing);
     }
+
+    public function count()
+    {
+        return $this->a->count() * $this->b->count();
+    }
 }

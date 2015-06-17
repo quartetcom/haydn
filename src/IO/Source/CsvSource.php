@@ -46,4 +46,12 @@ class CsvSource extends AbstractSource
         $row = $this->csv->getHeaderRow();
         $this->columnMapper->setMap($row);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        throw new \RuntimeException('This source does not support count.');
+    }
 }

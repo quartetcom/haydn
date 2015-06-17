@@ -23,4 +23,12 @@ class SingleColumnArraySource extends AbstractSource
             yield $row;
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return count($this->data);
+    }
 }

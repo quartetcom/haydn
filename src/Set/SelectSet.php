@@ -71,4 +71,9 @@ class SelectSet extends Set
     {
         $this->a->setPrefixing($prefixing);
     }
+
+    public function count()
+    {
+        return $this->a->count();
+    }
 }

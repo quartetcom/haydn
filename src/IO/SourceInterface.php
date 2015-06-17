@@ -1,7 +1,7 @@
 <?php
 namespace Quartet\Haydn\IO;
 
-interface SourceInterface extends \IteratorAggregate
+interface SourceInterface extends \IteratorAggregate, \Countable
 {
     /**
      * Get name of this source specified with constructor args.
