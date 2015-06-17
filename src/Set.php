@@ -86,6 +86,11 @@ class Set implements \IteratorAggregate, \Countable
      */
     public function select($selects)
     {
+        if ($this instanceof IdenticalSet) {
+            return $this;
+        } elseif ($this instanceof EmptySet) {
+            return $this;
+        }
         return new SelectSet($this, $selects);
     }
 
@@ -95,6 +100,11 @@ class Set implements \IteratorAggregate, \Countable
      */
     public function filter(MatcherInterface $matcher)
     {
+        if ($this instanceof IdenticalSet) {
+            return $this;
+        } elseif ($this instanceof EmptySet) {
+            return $this;
+        }
         return new FilterSet($this, $matcher);
     }
 
@@ -104,6 +114,11 @@ class Set implements \IteratorAggregate, \Countable
      */
     public function devide($matchers)
     {
+        if ($this instanceof IdenticalSet) {
+            return $this;
+        } elseif ($this instanceof EmptySet) {
+            return $this;
+        }
         $sets = [];
         foreach ($matchers as $key => $matcher)
         {
