@@ -64,13 +64,13 @@ class Set implements SetInterface
      */
     public function product(SetInterface $that)
     {
-        if ($this instanceof IdenticalSet) {
+        if ($this->isIdentical()) {
             return $that;
-        } elseif ($that instanceof IdenticalSet) {
+        } elseif ($that->isIdentical()) {
             return $this;
-        } elseif ($this instanceof EmptySet) {
+        } elseif ($this->isEmpty()) {
             return $this;
-        } elseif ($that instanceof EmptySet) {
+        } elseif ($that->isEmpty()) {
             return $that;
         }
         $product = new ProductSet($this, $that);
@@ -84,9 +84,9 @@ class Set implements SetInterface
      */
     public function select($selects)
     {
-        if ($this instanceof IdenticalSet) {
+        if ($this->isIdentical()) {
             return $this;
-        } elseif ($this instanceof EmptySet) {
+        } elseif ($this->isEmpty()) {
             return $this;
         }
         return new SelectSet($this, $selects);
@@ -97,9 +97,9 @@ class Set implements SetInterface
      */
     public function filter(MatcherInterface $matcher)
     {
-        if ($this instanceof IdenticalSet) {
+        if ($this->isIdentical()) {
             return $this;
-        } elseif ($this instanceof EmptySet) {
+        } elseif ($this->isEmpty()) {
             return $this;
         }
         return new FilterSet($this, $matcher);
@@ -110,9 +110,9 @@ class Set implements SetInterface
      */
     public function devide($matchers)
     {
-        if ($this instanceof IdenticalSet) {
+        if ($this->isIdentical()) {
             return $this;
-        } elseif ($this instanceof EmptySet) {
+        } elseif ($this->isEmpty()) {
             return $this;
         }
         $sets = [];
@@ -129,13 +129,13 @@ class Set implements SetInterface
      */
     public function union(SetInterface $that)
     {
-        if ($this instanceof IdenticalSet) {
+        if ($this->isIdentical()) {
             return $that;
-        } elseif ($that instanceof IdenticalSet) {
+        } elseif ($that->isIdentical()) {
             return $this;
-        } elseif ($this instanceof EmptySet) {
+        } elseif ($this->isEmpty()) {
             return $that;
-        } elseif ($that instanceof EmptySet) {
+        } elseif ($that->isEmpty()) {
             return $this;
         }
         return new UnionSet($this, $that);
@@ -169,5 +169,21 @@ class Set implements SetInterface
     public function count()
     {
         return $this->source->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isIdentical()
+    {
+        return $this instanceof IdenticalSet;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEmpty()
+    {
+        return $this instanceof EmptySet;
     }
 }

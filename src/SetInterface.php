@@ -52,6 +52,16 @@ interface SetInterface extends \IteratorAggregate, \Countable
     public function devide($matchers);
 
     /**
+     * @return bool
+     */
+    public function isIdentical();
+
+    /**
+     * @return bool
+     */
+    public function isEmpty();
+
+    /**
      * @return array
      */
     public function toArray();
@@ -60,4 +70,5 @@ interface SetInterface extends \IteratorAggregate, \Countable
      * @param bool $prefixing
      */
     public function setPrefixing($prefixing);
+
 }
