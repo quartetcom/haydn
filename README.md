@@ -1,10 +1,16 @@
 # Haydn
 
+[![Build Status](https://travis-ci.org/quartetcom/haydn.svg?branch=master)](https://travis-ci.org/quartetcom/haydn)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/quartetcom/haydn/badges/quality-score.png?b=master&s=5c21dd26d116f4a475b37189eb62e382dfd9c5c8)](https://scrutinizer-ci.com/g/quartetcom/haydn/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/quartetcom/haydn/badges/coverage.png?b=master&s=fd7af523e540354bbc7006be628f07c0c251be20)](https://scrutinizer-ci.com/g/quartetcom/haydn/?branch=master)
+[![Total Downloads](https://poser.pugx.org/quartet/haydn/downloads.png)](https://packagist.org/packages/quartet/haydn)
+[![Latest Stable Version](https://poser.pugx.org/quartet/haydn/v/stable.png)](https://packagist.org/packages/quartet/haydn)
+[![Latest Unstable Version](https://poser.pugx.org/quartet/haydn/v/unstable.png)](https://packagist.org/packages/quartet/haydn)
+
+
 <div style="float: right;">
 <img src="https://cloud.githubusercontent.com/assets/89830/7813142/4a65559a-03f3-11e5-8087-4cd0d7e114d2.jpg">
 </div>
-
-[![Circle CI](https://circleci.com/gh/quartetcom/haydn/tree/master.svg?style=shield&circle-token=7fa1285eed7256aab2cad085d139dd4a9b26f0ff)](https://circleci.com/gh/quartetcom/haydn/tree/master)
 
 配列に対してかけ算や列演算を宣言的に指定できるライブラリ。
 実装の特徴として、Setに対する各種演算は単に宣言的に行われるのみで、Setオブジェクトを`foreach`等でイテレーションしないかぎり、中身の走査は行われない点。
