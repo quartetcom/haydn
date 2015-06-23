@@ -27,6 +27,9 @@ class ArraySource extends AbstractSource
         parent::__construct($name, $columnMapper);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function iterate()
     {
         foreach ($this->data as $line) {

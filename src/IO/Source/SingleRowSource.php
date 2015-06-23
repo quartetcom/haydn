@@ -27,9 +27,12 @@ class SingleRowSource extends AbstractSource
         parent::__construct($name, new NullColumnMapper());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function iterate()
     {
-        return [$this->row];
+        yield $this->row;
     }
 
     /**
