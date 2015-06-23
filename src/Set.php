@@ -66,7 +66,8 @@ class Set implements SetInterface
     {
         if ($this->isIdentical() || $that->isIdentical()) {
             return $this->firstOfNotIdentical([$this, $that]);
-        } elseif ($this->isEmpty() || $that->isEmpty()) {
+        }
+        if ($this->isEmpty() || $that->isEmpty()) {
             return new EmptySet();
         }
 
@@ -83,7 +84,8 @@ class Set implements SetInterface
     {
         if ($this->isIdentical() || $that->isIdentical()) {
             return $this->firstOfNotIdentical([$this, $that]);
-        } elseif ($this->isEmpty() || $that->isEmpty()) {
+        }
+        if ($this->isEmpty() || $that->isEmpty()) {
             return $this->firstOfNotEmpty([$this, $that]);
         }
 
@@ -97,7 +99,8 @@ class Set implements SetInterface
     {
         if ($this->isIdentical()) {
             return $this;
-        } elseif ($this->isEmpty()) {
+        }
+        if ($this->isEmpty()) {
             return $this;
         }
         return new SelectSet($this, $selects);
@@ -110,7 +113,8 @@ class Set implements SetInterface
     {
         if ($this->isIdentical()) {
             return $this;
-        } elseif ($this->isEmpty()) {
+        }
+        if ($this->isEmpty()) {
             return $this;
         }
         return new FilterSet($this, $matcher);
@@ -123,7 +127,8 @@ class Set implements SetInterface
     {
         if ($this->isIdentical()) {
             return [$this];
-        } elseif ($this->isEmpty()) {
+        }
+        if ($this->isEmpty()) {
             return [$this];
         }
         $sets = [];
