@@ -13,11 +13,12 @@
 namespace Quartet\Haydn\Set;
 
 use Quartet\Haydn\Set;
+use Quartet\Haydn\SetInterface;
 
 class SelectSet extends Set
 {
     /**
-     * @var Set
+     * @var SetInterface
      */
     protected $a;
 
@@ -27,10 +28,10 @@ class SelectSet extends Set
     protected $selects;
 
     /**
-     * @param Set $a
+     * @param SetInterface $a
      * @param callable[] $selects
      */
-    public function __construct(Set $a, $selects)
+    public function __construct(SetInterface $a, $selects)
     {
         $this->a = $a;
         if (!is_array($selects)) {
@@ -46,7 +47,7 @@ class SelectSet extends Set
     protected function selectIterator()
     {
         $this->a->rewind();
-        foreach ($this->a->it as $r) {
+        foreach ($this->a->getIterator() as $r) {
             foreach ($this->selects as $select) {
                 $r2 = $select($r);
                 yield $r2;

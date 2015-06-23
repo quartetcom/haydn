@@ -21,11 +21,11 @@ class UnionSet extends AbstractOperationalSet
      */
     protected function unionIterator() {
         $this->a->rewind();
-        foreach ($this->a->it as $r1) {
+        foreach ($this->a->getIterator() as $r1) {
             yield $r1;
         }
         $this->b->rewind();
-        foreach ($this->b->it as $r2) {
+        foreach ($this->b->getIterator() as $r2) {
             yield $r2;
         }
     }

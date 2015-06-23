@@ -21,7 +21,7 @@ use Quartet\Haydn\Set\ProductSet;
 use Quartet\Haydn\Set\SelectSet;
 use Quartet\Haydn\Set\UnionSet;
 
-class Set implements \IteratorAggregate, \Countable
+class Set implements SetInterface
 {
     /**
      * @var SourceInterface
@@ -51,7 +51,7 @@ class Set implements \IteratorAggregate, \Countable
     }
 
     /**
-     * rewind iterator
+     * {@inheritdoc}
      */
     public function rewind()
     {
@@ -60,10 +60,9 @@ class Set implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param Set $that
-     * @return ProductSet
+     * {@inheritdoc}
      */
-    public function product(Set $that)
+    public function product(SetInterface $that)
     {
         if ($this instanceof IdenticalSet) {
             return $that;
@@ -81,8 +80,7 @@ class Set implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param callable[] $selects
-     * @return SelectSet
+     * {@inheritdoc}
      */
     public function select($selects)
     {
@@ -95,8 +93,7 @@ class Set implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param MatcherInterface $matcher
-     * @return FilterSet
+     * {@inheritdoc}
      */
     public function filter(MatcherInterface $matcher)
     {
@@ -109,8 +106,7 @@ class Set implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param MatcherInterface[] $matchers
-     * @return FilterSet[]
+     * {@inheritdoc}
      */
     public function devide($matchers)
     {
@@ -129,10 +125,9 @@ class Set implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param Set $that
-     * @return UnionSet
+     * {@inheritdoc}
      */
-    public function union(Set $that)
+    public function union(SetInterface $that)
     {
         if ($this instanceof IdenticalSet) {
             return $that;
@@ -147,7 +142,7 @@ class Set implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function toArray()
     {
@@ -161,13 +156,12 @@ class Set implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param $prefixing
+     * {@inheritdoc}
      */
     public function setPrefixing($prefixing)
     {
         $this->source->setPrefixing($prefixing);
     }
-
 
     /**
      * {@inheritdoc}

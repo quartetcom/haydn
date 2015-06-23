@@ -21,9 +21,9 @@ class ProductSet extends AbstractOperationalSet
      */
     protected function productIterator() {
         $this->a->rewind();
-        foreach ($this->a->it as $r1) {
+        foreach ($this->a->getIterator() as $r1) {
             $this->b->rewind();
-            foreach ($this->b->it as $r2) {
+            foreach ($this->b->getIterator() as $r2) {
                 yield array_merge($r1, $r2);
             }
         }

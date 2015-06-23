@@ -13,17 +13,24 @@
 namespace Quartet\Haydn\Set;
 
 use Quartet\Haydn\Set;
+use Quartet\Haydn\SetInterface;
 
 abstract class AbstractOperationalSet extends Set
 {
+    /**
+     * @var SetInterface
+     */
     protected $a;
+    /**
+     * @var SetInterface
+     */
     protected $b;
 
     /**
-     * @param Set $a
-     * @param Set $b
+     * @param SetInterface $a
+     * @param SetInterface $b
      */
-    public function __construct(Set $a, Set $b)
+    public function __construct(SetInterface $a, SetInterface $b)
     {
         $this->a = $a;
         $this->b = $b;

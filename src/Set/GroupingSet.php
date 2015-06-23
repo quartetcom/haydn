@@ -13,11 +13,12 @@
 namespace Quartet\Haydn\Set;
 
 use Quartet\Haydn\Set;
+use Quartet\Haydn\SetInterface;
 
 class GroupingSet extends Set
 {
     /**
-     * @var Set
+     * @var SetInterface
      */
     private $memberSet;
     /**
@@ -33,7 +34,7 @@ class GroupingSet extends Set
      */
     private $footerGenerator;
 
-    public function __construct(Set $memberSet, $headerGenerator, $memberSetGenerator, $footerGenerator)
+    public function __construct(SetInterface $memberSet, $headerGenerator, $memberSetGenerator, $footerGenerator)
     {
         $this->memberSet = $memberSet;
         $this->headerGenerator = $headerGenerator;
@@ -48,7 +49,7 @@ class GroupingSet extends Set
      */
     protected function groupingIterator() {
         $this->memberSet->rewind();
-        foreach ($this->memberSet->it as $r1) {
+        foreach ($this->memberSet->getIterator() as $r1) {
             if ($this->headerGenerator) {
                 yield call_user_func($this->headerGenerator, $r1);
             }

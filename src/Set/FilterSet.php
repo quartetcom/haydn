@@ -14,11 +14,12 @@ namespace Quartet\Haydn\Set;
 
 use Quartet\Haydn\Matcher\MatcherInterface;
 use Quartet\Haydn\Set;
+use Quartet\Haydn\SetInterface;
 
 class FilterSet extends Set
 {
     /**
-     * @var Set
+     * @var SetInterface
      */
     protected $a;
 
@@ -28,10 +29,10 @@ class FilterSet extends Set
     protected $matcher;
 
     /**
-     * @param Set $a
+     * @param SetInterface $a
      * @param MatcherInterface $matcher
      */
-    public function __construct(Set $a, MatcherInterface $matcher)
+    public function __construct(SetInterface $a, MatcherInterface $matcher)
     {
         $this->a = $a;
         $this->matcher = $matcher;
@@ -44,7 +45,7 @@ class FilterSet extends Set
     protected function filterIterator()
     {
         $this->a->rewind();
-        foreach ($this->a->it as $r) {
+        foreach ($this->a->getIterator() as $r) {
             if (!$this->matcher->match($r)) continue;
             yield $r;
         }
