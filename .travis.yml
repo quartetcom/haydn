@@ -1,14 +1,14 @@
 language: php
-
 php:
-  - 5.5
-  - 5.6
-  - hhvm
-
+- 5.5
+- 5.6
+- hhvm
 script:
- - composer install --prefer-source
- - phpunit --coverage-text --coverage-clover=coverage.clover
-
+- composer install --prefer-source
+- phpunit --coverage-text --coverage-clover=coverage.clover
 after_script:
- - wget https://scrutinizer-ci.com/ocular.phar
- - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+- wget https://scrutinizer-ci.com/ocular.phar
+- php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+notifications:
+  slack:
+    secure: BGBT5tYsUnDujFFVen+g76qCxJeju5KpuOw8LSAJzACjU9LFgKuG++Lbz6jaxzVYQJMRSBacmlRfTFB8ebBDZY2aLqCtf4eAw+TwBwkLQjeXdNgvfcvY6FUplH7GBNcgyN1sVpLd9uOdLUOdqPC3DTkxROf6XDZAvQlf4KLXx1YwXkrzqu5hocOJVefyzCVD3EYLjTNXjKnT98PSaPe963X4VC1chCuspaMPXXdYzz0A56GnpTuKaSIIXRk9D/MAKHyBWah4GtBOAGChEE3k5kj7pzgrpaVh/sVv06wPb+LUYKv5tevEVBii9h6mHhdw9T3gVRwsucZM3WylVN8wdIj5lNUum7gfX2IlwUfR5ZQ04eq6yqI9m4d332JJk3Vej9YETmUY8qV8Jf8y9slFCwd54XhwECoaNta2Cz/oGABVZEM+2SWLceJ21Z3RI+NUozp0vGHPLEpRrsQCvEJB0RUDxqtDWPMqSH+20yXwVIpMKc8TuValF/7GJO1n4vLHZLUeprVO0wRzdnIazkolf+3aY2OKHUnyYsHJuZNzAsW4yC/zkwLP4/gY498ZIdVYixP8XrKm842X5P0PmrQhFtfU6r5ATAN7Ohcshe0hP2eRf8CS24xx787Oj9B6zjb97PJHP90bjoa0A47U/ypOJpqG4+N861m5oEZFZgidCh8=
