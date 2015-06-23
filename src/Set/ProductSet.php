@@ -31,15 +31,13 @@ class ProductSet extends Set
     }
 
     /**
-     * @param Set $a
-     * @param Set $b
      * @return \Traversable
      */
-    protected function productIterator(Set $a, Set $b) {
-        $a->rewind();
-        foreach ($a->it as $r1) {
-            $b->rewind();
-            foreach ($b->it as $r2) {
+    protected function productIterator() {
+        $this->a->rewind();
+        foreach ($this->a->it as $r1) {
+            $this->b->rewind();
+            foreach ($this->b->it as $r2) {
                 yield array_merge($r1, $r2);
             }
         }
@@ -50,7 +48,7 @@ class ProductSet extends Set
      */
     public function rewind()
     {
-        $this->it = $this->productIterator($this->a, $this->b);
+        $this->it = $this->productIterator();
     }
 
     /**

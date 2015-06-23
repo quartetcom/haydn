@@ -19,7 +19,14 @@ class IdenticalSet extends Set
     public function __construct()
     {
         $this->rewind();
-        $this->it = function () {};
+    }
+
+    /**
+     * @return \Traversable
+     */
+    protected function identicalIterator()
+    {
+        yield 1;
     }
 
     /**
@@ -27,7 +34,7 @@ class IdenticalSet extends Set
      */
     public function rewind()
     {
-        $this->it = function () {yield 1;};
+        $this->it = $this->identicalIterator();
     }
 
     /**

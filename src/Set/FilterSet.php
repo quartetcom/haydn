@@ -39,15 +39,13 @@ class FilterSet extends Set
     }
 
     /**
-     * @param Set $a
-     * @param MatcherInterface $matcher
      * @return \Traversable
      */
-    protected function filterIterator(Set $a, MatcherInterface $matcher)
+    protected function filterIterator()
     {
-        $a->rewind();
-        foreach ($a->it as $r) {
-            if (!$matcher->match($r)) continue;
+        $this->a->rewind();
+        foreach ($this->a->it as $r) {
+            if (!$this->matcher->match($r)) continue;
             yield $r;
         }
     }
@@ -57,7 +55,7 @@ class FilterSet extends Set
      */
     public function rewind()
     {
-        $this->it = $this->filterIterator($this->a, $this->matcher);
+        $this->it = $this->filterIterator();
     }
 
     /**

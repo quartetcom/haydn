@@ -22,9 +22,9 @@ class SelectSet extends Set
     protected $a;
 
     /**
-     * @var callable
+     * @var \Callable[]
      */
-    protected $select;
+    protected $selects;
 
     /**
      * @param Set $a
@@ -41,15 +41,13 @@ class SelectSet extends Set
     }
 
     /**
-     * @param Set $a
-     * @param callable[] $selects
      * @return \Traversable
      */
-    protected function selectIterator(Set $a, $selects)
+    protected function selectIterator()
     {
-        $a->rewind();
-        foreach ($a->it as $r) {
-            foreach ($selects as $select) {
+        $this->a->rewind();
+        foreach ($this->a->it as $r) {
+            foreach ($this->selects as $select) {
                 $r2 = $select($r);
                 yield $r2;
             }
@@ -61,7 +59,7 @@ class SelectSet extends Set
      */
     public function rewind()
     {
-        $this->it = $this->selectIterator($this->a, $this->selects);
+        $this->it = $this->selectIterator();
     }
 
     /**
