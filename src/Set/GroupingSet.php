@@ -44,7 +44,7 @@ class GroupingSet extends Set
     }
 
     /**
-     * {@inheritdoc}
+     * @return \Generator
      */
     protected function groupingIterator() {
         $this->memberSet->rewind();
