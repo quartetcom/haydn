@@ -64,19 +64,30 @@ class Set implements SetInterface
      */
     public function product(SetInterface $that)
     {
-        if ($this->isIdentical()) {
-            return $that;
-        } elseif ($that->isIdentical()) {
-            return $this;
-        } elseif ($this->isEmpty()) {
-            return $this;
-        } elseif ($that->isEmpty()) {
-            return $that;
+        if ($this->isIdentical() || $that->isIdentical()) {
+            return $this->firstOfNotIdentical([$this, $that]);
+        } elseif ($this->isEmpty() || $that->isEmpty()) {
+            return new EmptySet();
         }
+
         $product = new ProductSet($this, $that);
         $product->setPrefixing(true);
 
         return $product;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function union(SetInterface $that)
+    {
+        if ($this->isIdentical() || $that->isIdentical()) {
+            return $this->firstOfNotIdentical([$this, $that]);
+        } elseif ($this->isEmpty() || $that->isEmpty()) {
+            return $this->firstOfNotEmpty([$this, $that]);
+        }
+
+        return new UnionSet($this, $that);
     }
 
     /**
@@ -111,9 +122,9 @@ class Set implements SetInterface
     public function devide($matchers)
     {
         if ($this->isIdentical()) {
-            return $this;
+            return [$this];
         } elseif ($this->isEmpty()) {
-            return $this;
+            return [$this];
         }
         $sets = [];
         foreach ($matchers as $key => $matcher)
@@ -122,23 +133,6 @@ class Set implements SetInterface
         }
 
         return $sets;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function union(SetInterface $that)
-    {
-        if ($this->isIdentical()) {
-            return $that;
-        } elseif ($that->isIdentical()) {
-            return $this;
-        } elseif ($this->isEmpty()) {
-            return $that;
-        } elseif ($that->isEmpty()) {
-            return $this;
-        }
-        return new UnionSet($this, $that);
     }
 
     /**
@@ -185,5 +179,37 @@ class Set implements SetInterface
     public function isEmpty()
     {
         return $this instanceof EmptySet;
+    }
+
+    /**
+     * @param SetInterface[] $sets
+     * @return SetInterface
+     */
+    protected function firstOfNotIdentical($sets)
+    {
+        foreach ($sets as $set)
+        {
+            if (!$set->isIdentical()) {
+                return $set;
+            }
+        }
+
+        return new EmptySet();
+    }
+
+    /**
+     * @param SetInterface[] $sets
+     * @return SetInterface
+     */
+    protected function firstOfNotEmpty($sets)
+    {
+        foreach ($sets as $set)
+        {
+            if (!$set->isEmpty()) {
+                return $set;
+            }
+        }
+
+        return new EmptySet();
     }
 }
