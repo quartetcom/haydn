@@ -54,7 +54,7 @@ abstract class AbstractSource implements SourceInterface
     }
 
     /**
-     * {@inheritdoc]
+     * {@inheritdoc}
      */
     public function getIterator()
     {
