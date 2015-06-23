@@ -38,5 +38,8 @@ class IdenticalSetTest extends \PHPUnit_Framework_TestCase
             ['a' => 'abc'],
             ['a' => 'def']
         ]));
+
+        $result = $i->toArray();
+        $this->assertThat($result[0], $this->equalTo(1));
     }
 }

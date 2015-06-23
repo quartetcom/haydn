@@ -12,33 +12,10 @@
 
 namespace Quartet\Haydn\Set;
 
-use Quartet\Haydn\Matcher\MatcherInterface;
 use Quartet\Haydn\Set;
-use Quartet\Haydn\SetInterface;
 
-class FilterSet extends Set
+class FilterSet extends AbstractSingleOperationSet
 {
-    /**
-     * @var SetInterface
-     */
-    protected $a;
-
-    /**
-     * @var MatcherInterface
-     */
-    protected $matcher;
-
-    /**
-     * @param SetInterface $a
-     * @param MatcherInterface $matcher
-     */
-    public function __construct(SetInterface $a, MatcherInterface $matcher)
-    {
-        $this->a = $a;
-        $this->matcher = $matcher;
-        parent::__construct(null);
-    }
-
     /**
      * @return \Traversable
      */
@@ -57,14 +34,6 @@ class FilterSet extends Set
     public function rewind()
     {
         $this->it = $this->filterIterator();
-    }
-
-    /**
-     * @param $prefixing
-     */
-    public function setPrefixing($prefixing)
-    {
-        $this->a->setPrefixing($prefixing);
     }
 
     /**

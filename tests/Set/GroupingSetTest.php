@@ -44,29 +44,37 @@ class GroupingSetTest extends \PHPUnit_Framework_TestCase
                 return $resultSet;
             },
             // Footer Generator
-            null
+            function ($r) { return ['type' => 'footer', 'name' => $r['k2'] . '#' . $r['k1']]; }
         );
 
         $all = $g1->toArray();
-
-        $this->assertThat(count($all), $this->equalTo(12));
 
         $expected = [
             ['type' => 'header', 'name' => 'あいう-abc'],
             ['type' => 'detail', 'content' => 'あいう abc 123'],
             ['type' => 'detail', 'content' => 'あいう abc 456'],
+            ['type' => 'footer', 'name' => 'abc#あいう'],
             ['type' => 'header', 'name' => 'あいう-def'],
             ['type' => 'detail', 'content' => 'あいう def 123'],
             ['type' => 'detail', 'content' => 'あいう def 456'],
+            ['type' => 'footer', 'name' => 'def#あいう'],
             ['type' => 'header', 'name' => 'かきく-abc'],
             ['type' => 'detail', 'content' => 'かきく abc 123'],
             ['type' => 'detail', 'content' => 'かきく abc 456'],
+            ['type' => 'footer', 'name' => 'abc#かきく'],
             ['type' => 'header', 'name' => 'かきく-def'],
             ['type' => 'detail', 'content' => 'かきく def 123'],
             ['type' => 'detail', 'content' => 'かきく def 456'],
+            ['type' => 'footer', 'name' => 'def#かきく'],
         ];
 
+
+        $this->assertThat(count($all), $this->equalTo(count($expected)));
+
         $this->assertThat($all, $this->equalTo($expected));
+
+        $this->setExpectedException('\RuntimeException');
+        $g1->count();
     }
 
     /**

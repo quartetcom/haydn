@@ -15,13 +15,8 @@ namespace Quartet\Haydn\Set;
 use Quartet\Haydn\Set;
 use Quartet\Haydn\SetInterface;
 
-class SelectSet extends Set
+class SelectSet extends AbstractSingleOperationSet
 {
-    /**
-     * @var SetInterface
-     */
-    protected $a;
-
     /**
      * @var \Callable[]
      */
@@ -33,12 +28,11 @@ class SelectSet extends Set
      */
     public function __construct(SetInterface $a, $selects)
     {
-        $this->a = $a;
         if (!is_array($selects)) {
             $selects = [$selects];
         }
         $this->selects = $selects;
-        parent::__construct(null);
+        parent::__construct($a);
     }
 
     /**
@@ -61,14 +55,6 @@ class SelectSet extends Set
     public function rewind()
     {
         $this->it = $this->selectIterator();
-    }
-
-    /**
-     * @param $prefixing
-     */
-    public function setPrefixing($prefixing)
-    {
-        $this->a->setPrefixing($prefixing);
     }
 
     /**

@@ -31,6 +31,28 @@ class SelectSetTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function testSelectSelectorNotArray()
+    {
+        $setA = new Set(new SingleColumnArraySource('a', ['abc','def','ghi','jkl']));
+
+        $selectedSet = $setA->select(function($row) {
+            return ['name' => $row['a']];
+        });
+
+        $this->assertThat($selectedSet->count(), $this->equalTo(4));
+
+        $i = new IdenticalSet();
+        $e = new EmptySet();
+
+        $temp = $i->product($selectedSet);
+        $this->assertThat($temp->count(), $this->equalTo(4));
+        $temp = $e->product($selectedSet);
+        $this->assertThat($temp->count(), $this->equalTo(0));
+    }
+
+    /**
+     * @test
+     */
     public function selectFromIdenticalIsIdentical()
     {
         $i = new IdenticalSet();

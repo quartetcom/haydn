@@ -110,7 +110,14 @@ abstract class AbstractColumnMapper implements ColumnMapperInterface
      */
     public function hasColumn($name)
     {
-        return ($this->columnIndex($name) === false);
+        try {
+            $this->columnIndex($name);
+            $ret = true;
+        } catch (\InvalidArgumentException $e) {
+            $ret = false;
+        }
+
+        return $ret;
     }
 
     /**

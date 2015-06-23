@@ -17,6 +17,7 @@ use Quartet\Haydn\IO\ColumnMapper\NullColumnMapper;
 use Quartet\Haydn\IO\ColumnMapper\SimpleArrayColumnMapper;
 use Quartet\Haydn\IO\Source\ArraySource;
 use Quartet\Haydn\Matcher\Matcher;
+use Quartet\Haydn\Matcher\MatcherInterface;
 use Quartet\Haydn\Set\EmptySet;
 use Quartet\Haydn\Set\IdenticalSet;
 
@@ -372,5 +373,55 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertThat($temp->count(), $this->equalTo(3));
         $temp = $i->union($e);
         $this->assertThat($temp->count(), $this->equalTo(0));
+    }
+
+    /**
+     * @test
+     */
+    public function testIdenticalOrEmpty()
+    {
+        $fruits = [
+            ['name' => 'Apple',  'price' => 100],
+            ['name' => 'Banana', 'price' =>  80],
+        ];
+
+        $drinks = [
+            ['name' => 'Yoghurt', 'price' => 200],
+            ['name' => 'Soda',    'price' => 120],
+            ['name' => 'Spirit',  'price' => 160],
+        ];
+
+        $fruitSet = new Set(new ArraySource('fruit', $fruits, new HashKeyColumnMapper()));
+        $drinkSet = new Set(new ArraySource('drink', $drinks, new HashKeyColumnMapper()));
+
+        $i = new IdenticalSet();
+        $i2 = new IdenticalSet();
+        $e = new EmptySet();
+        $e2 = new EmptySet();
+
+        $temp = $i->select([]);
+        $this->assertThat($temp->isIdentical(), $this->equalTo(true));
+        $temp = $e->select([]);
+        $this->assertThat($temp->isEmpty(), $this->equalTo(true));
+
+        $matcher = $this->getMock(MatcherInterface::class);
+        $temp = $i->filter($matcher);
+        $this->assertThat($temp->isIdentical(), $this->equalTo(true));
+        $temp = $e->filter($matcher);
+        $this->assertThat($temp->isEmpty(), $this->equalTo(true));
+
+        $temp = $i->devide([$matcher]);
+        $this->assertThat(count($temp), $this->equalTo(1));
+        $this->assertThat($temp[0]->isIdentical(), $this->equalTo(true));
+        $temp = $e->devide([$matcher]);
+        $this->assertThat(count($temp), $this->equalTo(1));
+        $this->assertThat($temp[0]->isEmpty(), $this->equalTo(true));
+
+
+        $temp = $i->product($i2);
+        $this->assertThat($temp->isEmpty(), $this->equalTo(true));
+
+        $temp = $e->union($e2);
+        $this->assertThat($temp->isEmpty(), $this->equalTo(true));
     }
 }

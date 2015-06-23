@@ -21,6 +21,13 @@ class ChainMapper extends AbstractColumnMapper
      */
     protected $a;
 
+    /**
+     * @param ColumnMapperInterface $a
+     * @param $map
+     *  [internalKey1] => 'mappedTo1',
+     *  [internalKey2] => 'mappedTo2',
+     *  [internalKey3] => 'mappedTo3',
+     */
     public function __construct(ColumnMapperInterface $a, $map)
     {
         $this->a = $a;

@@ -12,22 +12,15 @@
 
 namespace Quartet\Haydn\IO\ColumnMapper;
 
-class NullColumnMapper extends AbstractColumnMapper
+class SimpleArrayColumnMapperTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * {@inheritdoc}
-     * @throws \RuntimeException
+     * @test
+     * @expectedException \RuntimeException
      */
-    public function resolve($name)
+    public function testConstruct()
     {
-        throw new \RuntimeException('Cannot resolve with this mapper');
+        $obj = new SimpleArrayColumnMapper([]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function makeMap($data)
-    {
-        return range(0, count($data) - 1);
-    }
 }

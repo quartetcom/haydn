@@ -21,6 +21,10 @@ class SingleRowSource extends AbstractSource
      */
     private $row;
 
+    /**
+     * @param $name
+     * @param array $row
+     */
     public function __construct($name, $row)
     {
         $this->row = $row;

@@ -15,12 +15,8 @@ namespace Quartet\Haydn\Set;
 use Quartet\Haydn\Set;
 use Quartet\Haydn\SetInterface;
 
-class GroupingSet extends Set
+class GroupingSet extends AbstractSingleOperationSet
 {
-    /**
-     * @var SetInterface
-     */
-    private $memberSet;
     /**
      * @var \Callable
      */
@@ -36,20 +32,20 @@ class GroupingSet extends Set
 
     public function __construct(SetInterface $memberSet, $headerGenerator, $memberSetGenerator, $footerGenerator)
     {
-        $this->memberSet = $memberSet;
+        $this->a = $memberSet;
         $this->headerGenerator = $headerGenerator;
         $this->memberSetGenerator = $memberSetGenerator;
         $this->footerGenerator = $footerGenerator;
 
-        parent::__construct(null);
+        parent::__construct($memberSet, null);
     }
 
     /**
      * @return \Traversable
      */
     protected function groupingIterator() {
-        $this->memberSet->rewind();
-        foreach ($this->memberSet->getIterator() as $r1) {
+        $this->a->rewind();
+        foreach ($this->a->getIterator() as $r1) {
             if ($this->headerGenerator) {
                 yield call_user_func($this->headerGenerator, $r1);
             }
@@ -69,14 +65,6 @@ class GroupingSet extends Set
     public function rewind()
     {
         $this->it = $this->groupingIterator();
-    }
-
-    /**
-     * @param $prefixing
-     */
-    public function setPrefixing($prefixing)
-    {
-        $this->memberSet->setPrefixing($prefixing);
     }
 
     /**

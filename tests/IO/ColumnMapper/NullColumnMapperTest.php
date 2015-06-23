@@ -12,22 +12,24 @@
 
 namespace Quartet\Haydn\IO\ColumnMapper;
 
-class NullColumnMapper extends AbstractColumnMapper
+class NullColumnMapperTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * {@inheritdoc}
-     * @throws \RuntimeException
+     * @var NullColumnMapper
      */
-    public function resolve($name)
-    {
-        throw new \RuntimeException('Cannot resolve with this mapper');
-    }
+    private $SUT;
 
     /**
-     * {@inheritdoc}
+     * @test
+     * @expectedException \RuntimeException
      */
-    public function makeMap($data)
+    public function testResolve()
     {
-        return range(0, count($data) - 1);
+        $this->SUT->resolve('apple');
+    }
+
+    protected function setUp()
+    {
+        $this->SUT = new NullColumnMapper();
     }
 }
