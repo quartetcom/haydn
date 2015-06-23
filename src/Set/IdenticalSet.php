@@ -22,11 +22,17 @@ class IdenticalSet extends Set
         $this->it = function () {};
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function rewind()
     {
         $this->it = function () {yield 1;};
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function count()
     {
         return 1;

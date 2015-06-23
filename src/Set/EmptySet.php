@@ -21,11 +21,17 @@ class EmptySet extends Set
         $this->rewind();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function rewind()
     {
         $this->it = new \ArrayIterator([]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function count()
     {
         return 0;

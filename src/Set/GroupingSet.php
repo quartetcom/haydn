@@ -43,6 +43,9 @@ class GroupingSet extends Set
         parent::__construct(null);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function groupingIterator() {
         $this->memberSet->rewind();
         foreach ($this->memberSet->it as $r1) {
@@ -75,6 +78,9 @@ class GroupingSet extends Set
         $this->memberSet->setPrefixing($prefixing);
     }
 
+    /**
+     * @throws \RuntimeException
+     */
     public function count()
     {
         throw new \RuntimeException('This set does not support count.');

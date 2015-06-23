@@ -61,6 +61,9 @@ class UnionSet extends Set
         $this->b->setPrefixing($prefixing);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function count()
     {
         return $this->a->count() + $this->b->count();
