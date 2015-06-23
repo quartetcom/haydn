@@ -28,7 +28,7 @@ abstract class AbstractSource implements SourceInterface
     protected $columnMapper;
 
     /**
-     * @var \Generator
+     * @var \Traversable
      */
     protected $it;
 
@@ -62,10 +62,13 @@ abstract class AbstractSource implements SourceInterface
     }
 
     /**
-     * @return \Generator
+     * @return \Traversable
      */
     abstract protected function iterate();
 
+    /**
+     * {@inheritdoc}
+     */
     public function rewind()
     {
         $this->it = $this->iterate();

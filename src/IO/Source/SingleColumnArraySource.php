@@ -27,6 +27,9 @@ class SingleColumnArraySource extends AbstractSource
         parent::__construct($name, new NullColumnMapper());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function iterate()
     {
         foreach ($this->data as $line) {
