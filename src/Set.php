@@ -29,7 +29,7 @@ class Set implements \IteratorAggregate, \Countable
     private $source;
 
     /**
-     * @var \Generator|\Traversable
+     * @var \Traversable
      */
     protected $it;
 

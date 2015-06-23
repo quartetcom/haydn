@@ -41,7 +41,7 @@ class FilterSet extends Set
     /**
      * @param Set $a
      * @param MatcherInterface $matcher
-     * @return \Generator
+     * @return \Traversable
      */
     protected function filterIterator(Set $a, MatcherInterface $matcher)
     {

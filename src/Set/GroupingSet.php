@@ -44,7 +44,7 @@ class GroupingSet extends Set
     }
 
     /**
-     * @return \Generator
+     * @return \Traversable
      */
     protected function groupingIterator() {
         $this->memberSet->rewind();

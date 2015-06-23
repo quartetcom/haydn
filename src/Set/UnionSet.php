@@ -31,7 +31,7 @@ class UnionSet extends Set
     }
 
     /**
-     * @return \Generator
+     * @return \Traversable
      */
     protected function unionIterator() {
         $this->a->rewind();

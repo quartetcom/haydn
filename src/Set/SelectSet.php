@@ -43,7 +43,7 @@ class SelectSet extends Set
     /**
      * @param Set $a
      * @param callable[] $selects
-     * @return \Generator
+     * @return \Traversable
      */
     protected function selectIterator(Set $a, $selects)
     {

@@ -33,7 +33,7 @@ class ProductSet extends Set
     /**
      * @param Set $a
      * @param Set $b
-     * @return \Generator
+     * @return \Traversable
      */
     protected function productIterator(Set $a, Set $b) {
         $a->rewind();
