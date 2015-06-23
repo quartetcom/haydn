@@ -132,7 +132,7 @@ class Set implements SetInterface
             return [$this];
         }
         $sets = [];
-        foreach ($matchers as $key => $matcher)
+        foreach ($matchers as $matcher)
         {
             $sets[] = $this->filter($matcher);
         }
