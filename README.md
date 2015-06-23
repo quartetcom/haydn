@@ -323,7 +323,6 @@ var_dump($all);
 Setのデータ供給源（データソース）。
 
 - ArraySource
-- CsvSource
 - SingleColumnArraySource
 - SingleRowSource
 
@@ -339,27 +338,6 @@ $fruitArray = [
 ];
 
 $fruitSet = new Set(new ArraySource('fruit', $fruitArray, new HashKeyColumnMapper()));
-
-$output = $fruitSet->toArray();
-var_dump($output);
-
-// ['id' => 1, 'name' => 'Apple'],
-// ['id' => 2, 'name' => 'Banana'],
-// ['id' => 3, 'name' => 'Lemon']
-```
-
-### CsvSource
-
-CSV形式のファイルをデータソースとして利用する。
-
-id  | name
-----|----
-1   | Apple
-2   | Banana
-3   | Lemon
-
-```php
-$fruitSet = new Set(new CsvSource('fruit', new Csv('/path/to/example.csv')));
 
 $output = $fruitSet->toArray();
 var_dump($output);
@@ -484,3 +462,14 @@ var_dump($output);
 
 列名マッパーを複数チェインさせる。
 
+# Support
+
+If you find a bug or have a question, or want to request a feature, create an issue or pull request for it on [Issues](https://github.com/quartetcom/haydn/issues).
+
+# Copyright
+
+Copyright (c) 2015 GOTO Hidenori, All rights reserved.
+
+# License
+
+[The BSD 2-Clause License](http://opensource.org/licenses/BSD-2-Clause)

@@ -1,15 +1,14 @@
 {
     "name": "quartet/haydn",
-    "description":" ",
-    "keywords":[
-    ],
-    "license": "BSD-3-Clause",
-    "repositories": {
-        "quartet": {
-            "type": "composer",
-            "url": "http://dev.quartetcom.co.jp/composer"
+    "description":"set operation library",
+    "keywords":["set"],
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "GOTO Hidenori",
+            "email": "hidenorigoto@gmail.com"
         }
-    },
+    ],
     "config":{
         "bin-dir": "bin"
     },
@@ -25,12 +24,11 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-master": "1.2.x-dev"
         }
     },
     "require": {
-        "php": "~5.5",
-        "quartet/common": "~1.0"
+        "php": "~5.5"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.6"
