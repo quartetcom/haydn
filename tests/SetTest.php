@@ -12,12 +12,10 @@
 
 namespace Quartet\Haydn;
 
-use Quartet\Common\CsvUtil\Csv;
 use Quartet\Haydn\IO\ColumnMapper\HashKeyColumnMapper;
 use Quartet\Haydn\IO\ColumnMapper\NullColumnMapper;
 use Quartet\Haydn\IO\ColumnMapper\SimpleArrayColumnMapper;
 use Quartet\Haydn\IO\Source\ArraySource;
-use Quartet\Haydn\IO\Source\CsvSource;
 use Quartet\Haydn\Matcher\Matcher;
 use Quartet\Haydn\Set\EmptySet;
 use Quartet\Haydn\Set\IdenticalSet;
@@ -68,6 +66,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         ];
 
         $aSource = new ArraySource('array', $data, $mapper = new NullColumnMapper());
+        $aSource = new ArraySource('array', $data, $mapper = new NullColumnMapper());
 
         $set = new Set($aSource, 'array');
         $set->setPrefixing(true);
@@ -85,30 +84,6 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertThat($result[1]['array.1'], $this->equalTo('え'));
         $this->assertThat($result[2]['array.0'], $this->equalTo('お'));
         $this->assertThat($result[2]['array.3'], $this->equalTo(3000));
-    }
-
-    /**
-     * @test
-     */
-    public function CSVソース()
-    {
-        $aSource = new CsvSource('gad_group_report', new Csv(__DIR__.'/fixtures/google_ad_group_report.csv'), 2);
-
-        $set = new Set($aSource, 'gad_group_report');
-        $set->setPrefixing(true);
-
-        $this->assertThat($set, $this->isInstanceOf(Set::class));
-
-        $result = [];
-        foreach ($set as $record) {
-            $result[] = $record;
-        }
-
-        $this->assertThat($result[0]['gad_group_report.設定'], $this->equalTo('一時停止'));
-        $this->assertThat($result[0]['gad_group_report.広告グループ'], $this->equalTo('モバイル'));
-        $this->assertThat($result[1]['gad_group_report.設定'], $this->equalTo('アクティブ'));
-        $this->assertThat($result[1175]['gad_group_report.設定'], $this->equalTo('合計'));
-        $this->assertThat($result[1175]['gad_group_report.表示回数'], $this->equalTo('269659'));
     }
 
     /**
