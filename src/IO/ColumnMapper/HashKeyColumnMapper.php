@@ -17,17 +17,16 @@ class HashKeyColumnMapper extends AbstractColumnMapper
     /**
      * @param string $name
      * @return integer
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function resolve($name)
     {
         if ($this->map === null) {
             throw new \RuntimeException('map is not initialized.');
         }
-        if (($index = array_search($name, $this->map, true)) === false) {
-            throw new \InvalidArgumentException('Undefined column name:' . $name);
-        }
 
-        return $index;
+        return $this->columnIndex($name);
     }
 
     /**
