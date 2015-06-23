@@ -21,11 +21,6 @@ class ChainMapper extends AbstractColumnMapper
      */
     protected $a;
 
-    /**
-     * @var array
-     */
-    protected $map;
-
     public function __construct(ColumnMapperInterface $a, $map)
     {
         $this->a = $a;
@@ -34,13 +29,11 @@ class ChainMapper extends AbstractColumnMapper
 
     /**
      * {@inheritdoc}
+     * @throws \InvalidArgumentException
      */
     public function resolve($name)
     {
-        if (($index = array_search($name, $this->map, true)) === false) {
-            throw new \InvalidArgumentException('Undefined column name:' . $name);
-        }
-
+        $index = $this->columnIndex($name);
         return $this->a->resolve($index);
     }
 

@@ -14,8 +14,6 @@ namespace Quartet\Haydn\IO\ColumnMapper;
 
 class SimpleArrayColumnMapper extends AbstractColumnMapper
 {
-    protected $map;
-
     /**
      * @param array $names
      *  [0] => 'abc',
@@ -32,14 +30,11 @@ class SimpleArrayColumnMapper extends AbstractColumnMapper
 
     /**
      * {@inheritdoc}
+     * @throws \InvalidArgumentException
      */
     public function resolve($name)
     {
-        if (($index = array_search($name, $this->map, true)) === false) {
-            throw new \InvalidArgumentException('Undefined column name:' . $name);
-        }
-
-        return $index;
+        return $this->columnIndex($name);
     }
 
     /**

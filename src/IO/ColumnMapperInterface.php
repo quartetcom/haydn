@@ -22,6 +22,13 @@ interface ColumnMapperInterface
     public function resolve($name);
 
     /**
+     * Checks if column exists
+     * @param $name
+     * @return bool
+     */
+    public function hasColumn($name);
+
+    /**
      * Make and return column name index map
      * @param array $data (row if needed)
      * @return mixed

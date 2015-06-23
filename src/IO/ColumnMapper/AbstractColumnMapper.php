@@ -104,4 +104,26 @@ abstract class AbstractColumnMapper implements ColumnMapperInterface
     {
         $this->enablePrefix = $prefixing;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasColumn($name)
+    {
+        return ($this->columnIndex($name) === false);
+    }
+
+    /**
+     * @param $name
+     * @return int
+     * @throws \InvalidArgumentException
+     */
+    protected function columnIndex($name)
+    {
+        if (($index = array_search($name, $this->map, true)) === false) {
+            throw new \InvalidArgumentException('Undefined column name:' . $name);
+        }
+
+        return $index;
+    }
 }
