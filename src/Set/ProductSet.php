@@ -14,22 +14,8 @@ namespace Quartet\Haydn\Set;
 
 use Quartet\Haydn\Set;
 
-class ProductSet extends Set
+class ProductSet extends AbstractOperationalSet
 {
-    protected $a;
-    protected $b;
-
-    /**
-     * @param Set $a
-     * @param Set $b
-     */
-    public function __construct(Set $a, Set $b)
-    {
-        $this->a = $a;
-        $this->b = $b;
-        parent::__construct(null);
-    }
-
     /**
      * @return \Traversable
      */
@@ -49,15 +35,6 @@ class ProductSet extends Set
     public function rewind()
     {
         $this->it = $this->productIterator();
-    }
-
-    /**
-     * @param $prefixing
-     */
-    public function setPrefixing($prefixing)
-    {
-        $this->a->setPrefixing($prefixing);
-        $this->b->setPrefixing($prefixing);
     }
 
     /**

@@ -14,22 +14,8 @@ namespace Quartet\Haydn\Set;
 
 use Quartet\Haydn\Set;
 
-class UnionSet extends Set
+class UnionSet extends AbstractOperationalSet
 {
-    protected $a;
-    protected $b;
-
-    /**
-     * @param Set $a
-     * @param Set $b
-     */
-    public function __construct(Set $a, Set $b)
-    {
-        $this->a = $a;
-        $this->b = $b;
-        parent::__construct(null);
-    }
-
     /**
      * @return \Traversable
      */
@@ -50,15 +36,6 @@ class UnionSet extends Set
     public function rewind()
     {
         $this->it = $this->unionIterator();
-    }
-
-    /**
-     * @param $prefixing
-     */
-    public function setPrefixing($prefixing)
-    {
-        $this->a->setPrefixing($prefixing);
-        $this->b->setPrefixing($prefixing);
     }
 
     /**
