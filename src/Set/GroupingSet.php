@@ -15,7 +15,7 @@ namespace Quartet\Haydn\Set;
 use Quartet\Haydn\Set;
 use Quartet\Haydn\SetInterface;
 
-class GroupingSet extends AbstractSingleOperationSet
+class GroupingSet extends AbstractOperationalSet
 {
     /**
      * @var \Callable
@@ -37,7 +37,7 @@ class GroupingSet extends AbstractSingleOperationSet
         $this->memberSetGenerator = $memberSetGenerator;
         $this->footerGenerator = $footerGenerator;
 
-        parent::__construct($memberSet, null);
+        parent::__construct($memberSet);
     }
 
     /**
@@ -46,15 +46,8 @@ class GroupingSet extends AbstractSingleOperationSet
     protected function groupingIterator() {
         $this->a->rewind();
         foreach ($this->a->getIterator() as $r1) {
-            if ($this->headerGenerator) {
-                yield call_user_func($this->headerGenerator, $r1);
-            }
-            $gen = call_user_func($this->memberSetGenerator, $r1);
-            foreach ($gen as $r2) {
-                yield $r2;
-            }
-            if ($this->footerGenerator) {
-                yield call_user_func($this->footerGenerator, $r1);
+            foreach ($this->iterateRow($r1) as $detail) {
+                yield $detail;
             }
         }
     }
@@ -73,5 +66,23 @@ class GroupingSet extends AbstractSingleOperationSet
     public function count()
     {
         throw new \RuntimeException('This set does not support count.');
+    }
+
+    /**
+     * @param $r1
+     * @return \Generator
+     */
+    protected function iterateRow($r1)
+    {
+        if ($this->headerGenerator) {
+            yield call_user_func($this->headerGenerator, $r1);
+        }
+        $gen = call_user_func($this->memberSetGenerator, $r1);
+        foreach ($gen as $r2) {
+            yield $r2;
+        }
+        if ($this->footerGenerator) {
+            yield call_user_func($this->footerGenerator, $r1);
+        }
     }
 }

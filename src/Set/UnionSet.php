@@ -13,9 +13,23 @@
 namespace Quartet\Haydn\Set;
 
 use Quartet\Haydn\Set;
+use Quartet\Haydn\SetInterface;
 
 class UnionSet extends AbstractOperationalSet
 {
+    static public function operate(SetInterface $a, SetInterface $b)
+    {
+        if ($a->orIdentical($b)) {
+            return $a->firstOfNotIdentical([$a, $b]);
+        }
+        if ($a->orEmpty($b)) {
+            return $a->firstOfNotEmpty([$a, $a]);
+        }
+
+        return new UnionSet($a, $b);
+
+    }
+
     /**
      * @return \Traversable
      */

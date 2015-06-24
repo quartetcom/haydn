@@ -12,10 +12,27 @@
 
 namespace Quartet\Haydn\Set;
 
+use Quartet\Haydn\Matcher\MatcherInterface;
 use Quartet\Haydn\Set;
+use Quartet\Haydn\SetInterface;
 
-class FilterSet extends AbstractSingleOperationSet
+class FilterSet extends AbstractOperationalSet
 {
+    /**
+     * @var MatcherInterface
+     */
+    protected $matcher;
+
+    /**
+     * @param SetInterface $a
+     * @param MatcherInterface $matcher
+     */
+    public function __construct(SetInterface $a, MatcherInterface $matcher = null)
+    {
+        parent::__construct($a);
+        $this->matcher = $matcher;
+    }
+
     /**
      * @return \Traversable
      */

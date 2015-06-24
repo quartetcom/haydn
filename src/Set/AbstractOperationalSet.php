@@ -30,7 +30,7 @@ abstract class AbstractOperationalSet extends Set
      * @param SetInterface $a
      * @param SetInterface $b
      */
-    public function __construct(SetInterface $a, SetInterface $b)
+    public function __construct(SetInterface $a, SetInterface $b = null)
     {
         $this->a = $a;
         $this->b = $b;
@@ -43,6 +43,8 @@ abstract class AbstractOperationalSet extends Set
     public function setPrefixing($prefixing)
     {
         $this->a->setPrefixing($prefixing);
-        $this->b->setPrefixing($prefixing);
+        if ($this->b) {
+            $this->b->setPrefixing($prefixing);
+        }
     }
 }

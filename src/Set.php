@@ -64,10 +64,10 @@ class Set implements SetInterface
      */
     public function product(SetInterface $that)
     {
-        if ($this->isIdentical() || $that->isIdentical()) {
+        if ($this->orIdentical($that)) {
             return $this->firstOfNotIdentical([$this, $that]);
         }
-        if ($this->isEmpty() || $that->isEmpty()) {
+        if ($this->orEmpty($that)) {
             return new EmptySet();
         }
 
@@ -82,10 +82,10 @@ class Set implements SetInterface
      */
     public function union(SetInterface $that)
     {
-        if ($this->isIdentical() || $that->isIdentical()) {
+        if ($this->orIdentical($that)) {
             return $this->firstOfNotIdentical([$this, $that]);
         }
-        if ($this->isEmpty() || $that->isEmpty()) {
+        if ($this->orEmpty($that)) {
             return $this->firstOfNotEmpty([$this, $that]);
         }
 
@@ -97,10 +97,7 @@ class Set implements SetInterface
      */
     public function select($selects)
     {
-        if ($this->isIdentical()) {
-            return $this;
-        }
-        if ($this->isEmpty()) {
+        if ($this->isIdentical() || $this->isEmpty()) {
             return $this;
         }
         return new SelectSet($this, $selects);
@@ -111,12 +108,10 @@ class Set implements SetInterface
      */
     public function filter(MatcherInterface $matcher)
     {
-        if ($this->isIdentical()) {
+        if ($this->isIdentical() || $this->isEmpty()) {
             return $this;
         }
-        if ($this->isEmpty()) {
-            return $this;
-        }
+
         return new FilterSet($this, $matcher);
     }
 
@@ -125,10 +120,7 @@ class Set implements SetInterface
      */
     public function devide($matchers)
     {
-        if ($this->isIdentical()) {
-            return [$this];
-        }
-        if ($this->isEmpty()) {
+        if ($this->isIdentical() || $this->isEmpty()) {
             return [$this];
         }
         $sets = [];
@@ -216,5 +208,23 @@ class Set implements SetInterface
         }
 
         return new EmptySet();
+    }
+
+    /**
+     * @param SetInterface $that
+     * @return bool
+     */
+    protected function orIdentical(SetInterface $that)
+    {
+        return $this->isIdentical() || $that->isIdentical();
+    }
+
+    /**
+     * @param SetInterface $that
+     * @return bool
+     */
+    protected function orEmpty(SetInterface $that)
+    {
+        return $this->isEmpty() || $that->isEmpty();
     }
 }

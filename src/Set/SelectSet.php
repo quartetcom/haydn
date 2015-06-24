@@ -15,7 +15,7 @@ namespace Quartet\Haydn\Set;
 use Quartet\Haydn\Set;
 use Quartet\Haydn\SetInterface;
 
-class SelectSet extends AbstractSingleOperationSet
+class SelectSet extends AbstractOperationalSet
 {
     /**
      * @var \Callable[]
