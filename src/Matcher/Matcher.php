@@ -37,17 +37,28 @@ class Matcher implements MatcherInterface
     {
         $this->matchers = [];
         foreach ($this->option as $key => $value) {
-            if (is_callable($value)) {
-                $this->matchers[$key] = function($current, $row) use ($key, $value) {
-                    return $current && call_user_func($value, $row[$key], $row);
-                };
-            } else {
-                $this->matchers[$key] = function($current, $row) use ($key, $value) {
-                    return $current && ($row[$key] === $value);
-                };
-            }
+            $this->matchers[$key] = $this->buildOneMatcher($key, $value);
         }
     }
+
+    /**
+     * @param $key
+     * @param $value
+     * @return callable
+     */
+    private function buildOneMatcher($key, $value)
+    {
+        if (is_callable($value)) {
+            return function($current, $row) use ($key, $value) {
+                return $current && call_user_func($value, $row[$key], $row);
+            };
+        }
+
+        return function($current, $row) use ($key, $value) {
+            return $current && ($row[$key] === $value);
+        };
+    }
+
 
     /**
      * {@inheritdoc}
