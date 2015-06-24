@@ -17,9 +17,9 @@ use Quartet\Haydn\Set;
 class ProductSet extends AbstractOperationalSet
 {
     /**
-     * @return \Traversable
+     * {@inheritdoc}
      */
-    protected function productIterator() {
+    protected function iterate() {
         $this->a->rewind();
         foreach ($this->a->getIterator() as $r1) {
             $this->b->rewind();
@@ -27,14 +27,6 @@ class ProductSet extends AbstractOperationalSet
                 yield array_merge($r1, $r2);
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
-    {
-        $this->it = $this->productIterator();
     }
 
     /**

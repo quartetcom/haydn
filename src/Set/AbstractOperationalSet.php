@@ -47,4 +47,17 @@ abstract class AbstractOperationalSet extends Set
             $this->b->setPrefixing($prefixing);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rewind()
+    {
+        $this->it = $this->iterate();
+    }
+
+    /**
+     * @return \Traversable
+     */
+    abstract protected function iterate();
 }

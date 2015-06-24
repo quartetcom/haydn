@@ -43,21 +43,13 @@ class GroupingSet extends AbstractOperationalSet
     /**
      * @return \Traversable
      */
-    protected function groupingIterator() {
+    protected function iterate() {
         $this->a->rewind();
         foreach ($this->a->getIterator() as $r1) {
             foreach ($this->iterateRow($r1) as $detail) {
                 yield $detail;
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
-    {
-        $this->it = $this->groupingIterator();
     }
 
     /**
@@ -70,7 +62,7 @@ class GroupingSet extends AbstractOperationalSet
 
     /**
      * @param $r1
-     * @return \Generator
+     * @return \Traversable
      */
     protected function iterateRow($r1)
     {

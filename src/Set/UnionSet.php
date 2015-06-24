@@ -17,9 +17,9 @@ use Quartet\Haydn\Set;
 class UnionSet extends AbstractOperationalSet
 {
     /**
-     * @return \Traversable
+     * {@inheritdoc}
      */
-    protected function unionIterator() {
+    protected function iterate() {
         $this->a->rewind();
         foreach ($this->a->getIterator() as $r1) {
             yield $r1;
@@ -28,14 +28,6 @@ class UnionSet extends AbstractOperationalSet
         foreach ($this->b->getIterator() as $r2) {
             yield $r2;
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
-    {
-        $this->it = $this->unionIterator();
     }
 
     /**

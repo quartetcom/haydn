@@ -38,7 +38,7 @@ class SelectSet extends AbstractOperationalSet
     /**
      * @return \Traversable
      */
-    protected function selectIterator()
+    protected function iterate()
     {
         $this->a->rewind();
         foreach ($this->a->getIterator() as $r) {
@@ -47,14 +47,6 @@ class SelectSet extends AbstractOperationalSet
                 yield $r2;
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
-    {
-        $this->it = $this->selectIterator();
     }
 
     /**

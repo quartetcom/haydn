@@ -36,21 +36,13 @@ class FilterSet extends AbstractOperationalSet
     /**
      * @return \Traversable
      */
-    protected function filterIterator()
+    protected function iterate()
     {
         $this->a->rewind();
         foreach ($this->a->getIterator() as $r) {
             if (!$this->matcher->match($r)) continue;
             yield $r;
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
-    {
-        $this->it = $this->filterIterator();
     }
 
     /**
