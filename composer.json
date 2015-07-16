@@ -19,7 +19,8 @@
     },
     "autoload-dev":{
         "psr-4":{
-            "Quartet\\Haydn\\": "tests/"
+            "Quartet\\Haydn\\": "tests/",
+            "Haydn\\Examples\\": "docs/examples/"
         }
     },
     "extra": {
