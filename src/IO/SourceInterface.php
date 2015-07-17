@@ -21,6 +21,12 @@ interface SourceInterface extends \IteratorAggregate, \Countable
     public function getName();
 
     /**
+     * Set name of this source.
+     * @param $name
+     */
+    public function setName($name);
+
+    /**
      * Rewind iterator.
      */
     public function rewind();
@@ -33,7 +39,6 @@ interface SourceInterface extends \IteratorAggregate, \Countable
 
     /**
      * @param $prefixing
-     * @return mixed
      */
     public function setPrefixing($prefixing);
 

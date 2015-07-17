@@ -13,8 +13,11 @@
 namespace Quartet\Haydn\IO\Source;
 
 use Quartet\Haydn\IO\ColumnMapper\NullColumnMapper;
+use Quartet\Haydn\IO\Source\Operation\FilterableInterface;
+use Quartet\Haydn\Matcher\ArrayExcludeMatcher;
+use Quartet\Haydn\Matcher\MatcherInterface;
 
-class SingleColumnArraySource extends AbstractSource
+class SingleColumnArraySource extends AbstractSource implements FilterableInterface
 {
     /**
      * @var array $data
@@ -44,5 +47,21 @@ class SingleColumnArraySource extends AbstractSource
     public function count()
     {
         return count($this->data);
+    }
+
+    /**
+     * filters source data directly.
+     * {@inheritdoc}
+     */
+    public function filter(MatcherInterface $matcher)
+    {
+        if ($matcher instanceof ArrayExcludeMatcher) {
+            $this->data = array_diff($this->data, $matcher->getExcludes());
+            return;
+        }
+
+        $this->data = array_filter($this->data, function ($row) use ($matcher) {
+            return $matcher->match($row);
+        });
     }
 }
