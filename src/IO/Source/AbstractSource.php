@@ -54,6 +54,14 @@ abstract class AbstractSource implements SourceInterface
     }
 
     /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getIterator()
