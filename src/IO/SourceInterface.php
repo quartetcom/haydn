@@ -64,13 +64,13 @@ interface SourceInterface extends \IteratorAggregate, \Countable
 
     /**
      * @return bool
-     * @since 1.2.1
+     * @since 1.3.0
      */
     public function getSupplementColumns();
 
     /**
      * @param bool $supplement
-     * @since 1.2.1
+     * @since 1.3.0
      */
     public function setSupplementColumns($supplement);
 }
