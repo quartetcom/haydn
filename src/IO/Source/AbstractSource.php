@@ -37,6 +37,11 @@ abstract class AbstractSource implements SourceInterface
      */
     protected $skipIllegalRow = true;
 
+    /**
+     * @var bool
+     */
+    protected $supplementColumns = false;
+
     public function __construct($name, ColumnMapperInterface $columnMapper)
     {
         $this->name = $name;
@@ -112,7 +117,7 @@ abstract class AbstractSource implements SourceInterface
     }
 
     /**
-     * @param $prefixing
+     * {@inheritdoc}
      */
     public function setPrefixing($prefixing)
     {
@@ -120,7 +125,7 @@ abstract class AbstractSource implements SourceInterface
     }
 
     /**
-     * @return boolean
+     * {@inheritdoc}
      */
     public function getSkipIllegalRow()
     {
@@ -128,10 +133,26 @@ abstract class AbstractSource implements SourceInterface
     }
 
     /**
-     * @param boolean $skip
+     * {@inheritdoc}
      */
     public function setSkipIllegalRow($skip)
     {
         $this->skipIllegalRow = $skip;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupplementColumns()
+    {
+        return $this->supplementColumns;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSupplementColumns($supplement)
+    {
+        $this->supplementColumns = $supplement;
     }
 }
