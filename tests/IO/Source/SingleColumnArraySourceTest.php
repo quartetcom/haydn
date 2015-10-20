@@ -13,6 +13,7 @@
 namespace Quartet\Haydn\IO\Source;
 
 use Quartet\Haydn\Matcher\ArrayExcludeMatcher;
+use Quartet\Haydn\Matcher\Matcher;
 
 class SingleColumnArraySourceTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,6 +45,20 @@ class SingleColumnArraySourceTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function testFilter()
+    {
+        $data = range(1,10);
+        $source = new SingleColumnArraySource('test', $data);
+        $source->filter(new Matcher(['test'=>4]));
+        $ret = $source->toArray();
+
+        $this->assertThat($source->count(), $this->equalTo(1));
+        $this->assertThat($ret[0]['test'], $this->equalTo(4));
+    }
+
+    /**
+     * @test
+     */
+    public function testFilterByExcluded()
     {
         $data = range(1,10);
         $source = new SingleColumnArraySource('test', $data);

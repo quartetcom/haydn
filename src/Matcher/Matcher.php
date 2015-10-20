@@ -55,7 +55,11 @@ class Matcher implements MatcherInterface
         }
 
         return function($current, $row) use ($key, $value) {
-            return $current && ($row[$key] === $value);
+            if (is_array($row)) {
+                return $current && ($row[$key] === $value);
+            } else {
+                return $current && ($row === $value);
+            }
         };
     }
 
