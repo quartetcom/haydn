@@ -61,4 +61,16 @@ interface SourceInterface extends \IteratorAggregate, \Countable
      * @param bool $skip
      */
     public function setSkipIllegalRow($skip);
+
+    /**
+     * @return bool
+     * @since 1.2.1
+     */
+    public function getSupplementColumns();
+
+    /**
+     * @param bool $supplement
+     * @since 1.2.1
+     */
+    public function setSupplementColumns($supplement);
 }

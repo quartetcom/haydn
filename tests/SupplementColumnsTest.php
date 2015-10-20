@@ -16,17 +16,20 @@ use Quartet\Haydn\Exception\IllegalColumnNumbersException;
 use Quartet\Haydn\IO\ColumnMapper\SimpleArrayColumnMapper;
 use Quartet\Haydn\IO\Source\ArraySource;
 
-class SkipIllegalTest extends \PHPUnit_Framework_TestCase
+/**
+ * @since 1.2.1
+ */
+class SupplumentColumnsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      */
-    public function testSkipIllegal()
+    public function testSupplementColumns()
     {
         $data = [
             ["あ","い",150,200],
             ["う","え",250],
-            ["お","か", 50,3000],
+            ["お","か"],
         ];
 
         $mapper1 = new SimpleArrayColumnMapper([
@@ -34,8 +37,7 @@ class SkipIllegalTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $aSource = new ArraySource('array', $data, $mapper1);
-        $aSource->setSupplementColumns(false);
-        $aSource->setSkipIllegalRow(true);
+        $aSource->setSupplementColumns(true);
         $set = new Set($aSource, 'array');
         $set->setPrefixing(true);
 
@@ -43,19 +45,22 @@ class SkipIllegalTest extends \PHPUnit_Framework_TestCase
 
         $this->assertThat($result[0]['array.char1'], $this->equalTo('あ'));
         $this->assertThat($result[0]['array.num1'], $this->equalTo(150));
-        $this->assertThat($result[1]['array.char1'], $this->equalTo('お'));
-        $this->assertThat($result[1]['array.num2'], $this->equalTo(3000));
+        $this->assertThat($result[1]['array.char1'], $this->equalTo('う'));
+        $this->assertThat($result[1]['array.num2'], $this->equalTo(''));
+        $this->assertThat($result[2]['array.char1'], $this->equalTo('お'));
+        $this->assertThat($result[2]['array.num1'], $this->equalTo(''));
+        $this->assertThat($result[2]['array.num2'], $this->equalTo(''));
     }
 
     /**
      * @test
      */
-    public function testSkipIllegal_setFalse()
+    public function testSupplementColumns_setFalse()
     {
         $data = [
             ["あ","い",150,200],
             ["う","え",250],
-            ["お","か", 50,3000],
+            ["お","か"],
         ];
 
         $mapper1 = new SimpleArrayColumnMapper([

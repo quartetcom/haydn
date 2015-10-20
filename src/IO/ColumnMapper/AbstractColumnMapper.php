@@ -12,6 +12,7 @@
 
 namespace Quartet\Haydn\IO\ColumnMapper;
 
+use Quartet\Haydn\Exception\IllegalColumnNumbersException;
 use Quartet\Haydn\IO\ColumnMapperInterface;
 use Quartet\Haydn\IO\SourceInterface;
 
@@ -58,15 +59,19 @@ abstract class AbstractColumnMapper implements ColumnMapperInterface
             $this->initColumnNameCache($data);
         }
 
+        $columns = $this->columnNamesCache;
+
         if (count($this->columnNamesCache) !== count($data)) {
-            if ($this->source->getSkipIllegalRow() === true) {
+            if ($this->source->getSupplementColumns() === true) {
+                list($columns, $data) = $this->supplementColumns($columns, $data);
+            } elseif ($this->source->getSkipIllegalRow() === true) {
                 return null;
             } else {
-                throw new \RuntimeException('illegal column number:'.PHP_EOL. print_r($data, true));
+                throw new IllegalColumnNumbersException('illegal column number:'.PHP_EOL. print_r($data, true));
             }
         }
 
-        return array_combine($this->columnNamesCache, $data);
+        return array_combine($columns, $data);
     }
 
     /**
@@ -132,5 +137,24 @@ abstract class AbstractColumnMapper implements ColumnMapperInterface
         }
 
         return $index;
+    }
+
+    /**
+     * @param $columns
+     * @param $data
+     * @return array
+     */
+    protected function supplementColumns($columns, $data)
+    {
+        $c1 = count($columns);
+        $c2 = count($data);
+        if ($c1 === $c2) return [$columns, $data];
+        if ($c1 > $c2) {
+            $data = array_pad($data, max($c1, $c2), '');
+        } else {
+            $columns = array_pad($columns, max($c1, $c2), '');
+        }
+
+        return [$columns, $data];
     }
 }
