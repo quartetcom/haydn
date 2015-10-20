@@ -61,7 +61,7 @@ abstract class AbstractColumnMapper implements ColumnMapperInterface
 
         $columns = $this->columnNamesCache;
 
-        if (count($this->columnNamesCache) !== count($data)) {
+        if (count($columns) !== count($data)) {
             if ($this->source->getSupplementColumns() === true) {
                 list($columns, $data) = $this->supplementColumns($columns, $data);
             } elseif ($this->source->getSkipIllegalRow() === true) {
