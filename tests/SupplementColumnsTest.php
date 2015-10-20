@@ -39,6 +39,7 @@ class SupplumentColumnsTest extends \PHPUnit_Framework_TestCase
 
         $aSource = new ArraySource('array', $data, $mapper1);
         $aSource->setSupplementColumns(true);
+        $aSource->setSkipIllegalRow(false);
         $set = new Set($aSource, 'array');
         $set->setPrefixing(true);
 

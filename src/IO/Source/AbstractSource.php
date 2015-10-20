@@ -40,7 +40,7 @@ abstract class AbstractSource implements SourceInterface
     /**
      * @var bool
      */
-    protected $supplementColumns = true;
+    protected $supplementColumns = false;
 
     public function __construct($name, ColumnMapperInterface $columnMapper)
     {
