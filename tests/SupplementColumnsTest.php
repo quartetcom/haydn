@@ -30,6 +30,7 @@ class SupplumentColumnsTest extends \PHPUnit_Framework_TestCase
             ["あ","い",150,200],
             ["う","え",250],
             ["お","か"],
+            ["き","く",10,20,30,40],
         ];
 
         $mapper1 = new SimpleArrayColumnMapper([
@@ -50,6 +51,8 @@ class SupplumentColumnsTest extends \PHPUnit_Framework_TestCase
         $this->assertThat($result[2]['array.char1'], $this->equalTo('お'));
         $this->assertThat($result[2]['array.num1'], $this->equalTo(''));
         $this->assertThat($result[2]['array.num2'], $this->equalTo(''));
+        $this->assertThat($result[3]['array.char1'], $this->equalTo('き'));
+        $this->assertThat(count($result[3]), $this->equalTo(6));
     }
 
     /**

@@ -152,7 +152,10 @@ abstract class AbstractColumnMapper implements ColumnMapperInterface
         if ($c1 > $c2) {
             $data = array_pad($data, max($c1, $c2), '');
         } else {
-            $columns = array_pad($columns, max($c1, $c2), '');
+            for ($i = count($columns); $i < count($data); $i++)
+            {
+                $columns[$i] = '__col' . ($i + 1);
+            }
         }
 
         return [$columns, $data];
