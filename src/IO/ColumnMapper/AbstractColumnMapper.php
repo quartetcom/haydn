@@ -50,7 +50,7 @@ abstract class AbstractColumnMapper implements ColumnMapperInterface
 
     /**
      * @param $data
-     * @return array
+     * @return null|array
      * @throws \RuntimeException
      */
     public function makeRow($data)
@@ -127,7 +127,7 @@ abstract class AbstractColumnMapper implements ColumnMapperInterface
 
     /**
      * @param $name
-     * @return int
+     * @return integer|string
      * @throws \InvalidArgumentException
      */
     protected function columnIndex($name)

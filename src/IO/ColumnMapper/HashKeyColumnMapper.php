@@ -16,7 +16,7 @@ class HashKeyColumnMapper extends AbstractColumnMapper
 {
     /**
      * @param string $name
-     * @return integer
+     * @return integer|string
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */

@@ -34,7 +34,7 @@ class Set implements SetInterface
     protected $it;
 
     /**
-     * @param SourceInterface $source
+     * @param null|SourceInterface $source
      */
     public function __construct(SourceInterface $source = null)
     {

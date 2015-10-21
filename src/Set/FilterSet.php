@@ -25,7 +25,7 @@ class FilterSet extends AbstractOperationalSet
 
     /**
      * @param SetInterface $a
-     * @param MatcherInterface $matcher
+     * @param null|MatcherInterface $matcher
      */
     public function __construct(SetInterface $a, MatcherInterface $matcher = null)
     {

@@ -28,7 +28,7 @@ abstract class AbstractOperationalSet extends Set
 
     /**
      * @param SetInterface $a
-     * @param SetInterface $b
+     * @param null|SetInterface $b
      */
     public function __construct(SetInterface $a, SetInterface $b = null)
     {
