@@ -13,6 +13,7 @@
 namespace Quartet\Haydn\IO\Source;
 
 use Quartet\Haydn\IO\ColumnMapper\NullColumnMapper;
+use Quartet\Haydn\IO\ColumnMapperInterface;
 
 class SourceImpl extends AbstractSource
 {
@@ -36,7 +37,11 @@ class AbstractSourceTest extends \PHPUnit_Framework_TestCase
      */
     public function testColumnMapper()
     {
-        $mapper = new NullColumnMapper();
+        $mapper = $this->getMock(ColumnMapperInterface::class);
+        $mapper->expects($this->once())
+            ->method('setSource')
+            ->with($this->SUT);
+
         $this->SUT->setColumnMapper($mapper);
         $result = $this->SUT->getColumnMapper();
         $this->assertThat($result, $this->equalTo($mapper));
