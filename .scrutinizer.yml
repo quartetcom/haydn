@@ -3,3 +3,4 @@ tools:
 filter:
     excluded_paths:
         - docs/*
+        - tests/*
