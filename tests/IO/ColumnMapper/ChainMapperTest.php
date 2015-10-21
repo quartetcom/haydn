@@ -34,13 +34,40 @@ class ChainMapperTest extends \PHPUnit_Framework_TestCase
     public function testResolve()
     {
         $result = $this->SUT->resolve('name2');
-
         $this->assertThat($result, $this->equalTo(array_search('name1', $this->internalMap, true)));
+
+        $result = $this->SUT->resolve('name1');
+        $this->assertThat($result, $this->equalTo(array_search('name1', $this->internalMap, true)));
+
+        $result = $this->SUT->resolve('price1');
+        $this->assertThat($result, $this->equalTo(array_search('price1', $this->internalMap, true)));
+    }
+
+    /**
+     * @test
+     */
+    public function testMakeMap()
+    {
+        $result = $this->SUT->makeMap([
+            'price1' => 100,
+            'addresss1' => 'testaddress',
+            'email1' => 'testemail',
+            'name2' => 'testname']);
+
+        $this->assertThat($result, $this->equalTo(['price1', 'address1', 'email1', 'name1']));
+
+        $result = $this->SUT->makeMap([
+            'price1' => 100,
+            'addresss1' => 'testaddress',
+            'email1' => 'testemail',
+            'name1' => 'testname']);
+
+        $this->assertThat($result, $this->equalTo(['price1', 'address1', 'email1', 'name1']));
     }
 
     protected function setUp()
     {
-        $this->map = ['name1' => 'name2'];
+        $this->map = ['name2' => 'name1'];
         $this->internalMap = ['price1','address1','email1','name1'];
         $this->internalMapper = new SimpleArrayColumnMapper($this->internalMap);
         $this->SUT = new ChainMapper($this->internalMapper, $this->map);
