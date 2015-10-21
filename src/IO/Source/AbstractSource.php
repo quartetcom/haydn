@@ -45,8 +45,7 @@ abstract class AbstractSource implements SourceInterface
     public function __construct($name, ColumnMapperInterface $columnMapper)
     {
         $this->name = $name;
-        $this->columnMapper = $columnMapper;
-        $this->columnMapper->setSource($this);
+        $this->setColumnMapper($columnMapper);
         $this->rewind();
     }
 
@@ -101,6 +100,7 @@ abstract class AbstractSource implements SourceInterface
     public function setColumnMapper(ColumnMapperInterface $mapper)
     {
         $this->columnMapper = $mapper;
+        $this->columnMapper->setSource($this);
     }
 
     /**
