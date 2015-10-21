@@ -22,16 +22,22 @@ class ChainMapper extends AbstractColumnMapper
     protected $a;
 
     /**
+     * @var array
+     */
+    protected $aliasMap;
+
+    /**
      * @param ColumnMapperInterface $a
      * @param $map
-     *  [internalKey1] => 'mappedTo1',
-     *  [internalKey2] => 'mappedTo2',
-     *  [internalKey3] => 'mappedTo3',
+     *  'mappedTo1' => internalKey1,
+     *  'mappedTo2' => internalKey2,
+     *  'mappedTo3' => internalKey1, (supports multiple mapping to same internal key)
      */
     public function __construct(ColumnMapperInterface $a, $map)
     {
         $this->a = $a;
-        $this->map = $map;
+        $this->map = array_keys($map);
+        $this->aliasMap = $map;
     }
 
     /**
@@ -40,8 +46,9 @@ class ChainMapper extends AbstractColumnMapper
      */
     public function resolve($name)
     {
-        $index = $this->columnIndex($name);
-        return $this->a->resolve($index);
+        $name = array_key_exists($name, $this->aliasMap) ? $this->aliasMap[$name] : $name;
+
+        return $this->a->resolve($name);
     }
 
     /**
@@ -52,7 +59,8 @@ class ChainMapper extends AbstractColumnMapper
         $innerMap = $this->a->makeMap($data);
 
         return array_map(function($element) {
-            return $this->map[$element];
+            return array_key_exists($element, $this->aliasMap) ?
+                $this->aliasMap[$element] : $element;
         }, $innerMap);
     }
 }
