@@ -52,7 +52,8 @@ class ChainMapper extends AbstractColumnMapper
         $innerMap = $this->a->makeMap($data);
 
         return array_map(function($element) {
-            return $this->map[$element];
+            return array_key_exists($element, $this->map) ?
+                $this->map[$element] : $element;
         }, $innerMap);
     }
 }
